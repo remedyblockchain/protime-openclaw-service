@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Agent Infrastructure Setup | Protime Consulting</title>
+  <meta name="description" content="Protime Consulting installs, configures, and deploys a custom AI agent infrastructure for your business. Built by a former Microsoft AI strategist. Live in a week." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0a0a0a;
+      --dark: #111318;
+      --card: #16191f;
+      --border: #23272f;
+      --accent: #2563eb;
+      --accent-light: #3b82f6;
+      --text: #e8eaf0;
+      --muted: #8b91a0;
+      --white: #ffffff;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--black);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* NAV */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 2rem;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: rgba(10,10,10,0.95);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+    }
+    .nav-logo {
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: -0.01em;
+    }
+    .nav-logo span { color: var(--accent-light); }
+    .nav-cta {
+      background: var(--accent);
+      color: var(--white);
+      padding: 0.5rem 1.25rem;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    .nav-cta:hover { background: var(--accent-light); }
+
+    /* HERO */
+    .hero {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 6rem 2rem 5rem;
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(37,99,235,0.12);
+      color: var(--accent-light);
+      border: 1px solid rgba(59,130,246,0.25);
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.35rem 1rem;
+      margin-bottom: 2rem;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.5rem;
+      color: var(--white);
+    }
+    .hero h1 em {
+      font-style: normal;
+      color: var(--accent-light);
+    }
+    .hero p {
+      font-size: 1.125rem;
+      color: var(--muted);
+      max-width: 640px;
+      margin: 0 auto 2.5rem;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: var(--white);
+      padding: 0.875rem 2rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 1rem;
+      transition: background 0.2s, transform 0.15s;
+      display: inline-block;
+    }
+    .btn-primary:hover { background: var(--accent-light); transform: translateY(-1px); }
+    .btn-secondary {
+      background: transparent;
+      color: var(--text);
+      padding: 0.875rem 2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      border: 1px solid var(--border);
+      transition: border-color 0.2s, transform 0.15s;
+      display: inline-block;
+    }
+    .btn-secondary:hover { border-color: var(--muted); transform: translateY(-1px); }
+
+    /* SOCIAL PROOF BAR */
+    .proof-bar {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 1.25rem 2rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.875rem;
+    }
+    .proof-bar strong { color: var(--text); }
+
+    /* SECTIONS */
+    section { padding: 5rem 2rem; }
+    .section-inner { max-width: 1040px; margin: 0 auto; }
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent-light);
+      margin-bottom: 1rem;
+    }
+    .section-title {
+      font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      margin-bottom: 1rem;
+    }
+    .section-sub {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 580px;
+      margin-bottom: 3rem;
+    }
+
+    /* VALUE PROPS */
+    .props-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+    }
+    .prop-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.75rem;
+    }
+    .prop-icon {
+      font-size: 1.75rem;
+      margin-bottom: 1rem;
+    }
+    .prop-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 0.5rem;
+    }
+    .prop-card p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* PRICING */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      align-items: start;
+    }
+    .pricing-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.25rem;
+      position: relative;
+    }
+    .pricing-card.featured {
+      border-color: var(--accent);
+      background: linear-gradient(135deg, #16191f 0%, #111b2e 100%);
+    }
+    .featured-badge {
+      position: absolute;
+      top: -1px;
+      right: 2rem;
+      background: var(--accent);
+      color: var(--white);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.85rem;
+      border-radius: 0 0 8px 8px;
+    }
+    .pricing-tier {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent-light);
+      margin-bottom: 0.75rem;
+    }
+    .pricing-price {
+      font-size: 2.75rem;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin-bottom: 0.25rem;
+    }
+    .pricing-price span {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--muted);
+    }
+    .pricing-desc {
+      font-size: 0.875rem;
+      color: var(--muted);
+      margin-bottom: 1.75rem;
+      padding-bottom: 1.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .pricing-features {
+      list-style: none;
+      margin-bottom: 2rem;
+    }
+    .pricing-features li {
+      font-size: 0.9rem;
+      color: var(--text);
+      padding: 0.4rem 0;
+      display: flex;
+      gap: 0.6rem;
+      align-items: flex-start;
+    }
+    .pricing-features li::before {
+      content: "✓";
+      color: var(--accent-light);
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 0.05rem;
+    }
+    .pricing-card .btn-primary,
+    .pricing-card .btn-secondary {
+      width: 100%;
+      text-align: center;
+      display: block;
+    }
+
+    /* SUPPORT TIERS */
+    .support-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    /* DIY CALC */
+    .calc-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      max-width: 720px;
+    }
+    .calc-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.95rem;
+    }
+    .calc-row:last-child { border-bottom: none; }
+    .calc-row .label { color: var(--muted); }
+    .calc-row .value { font-weight: 700; color: var(--white); }
+    .calc-row.highlight .value { color: #22c55e; font-size: 1.1rem; }
+
+    /* BIO */
+    .bio-box {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 2rem;
+      align-items: start;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      max-width: 780px;
+    }
+    .bio-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), #7c3aed);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--white);
+      flex-shrink: 0;
+    }
+    .bio-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 0.25rem;
+    }
+    .bio-title { font-size: 0.85rem; color: var(--accent-light); margin-bottom: 0.75rem; }
+    .bio-text { font-size: 0.925rem; color: var(--muted); line-height: 1.7; }
+
+    /* CTA BANNER */
+    .cta-banner {
+      background: linear-gradient(135deg, #111b2e 0%, #0a0a0a 100%);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .cta-banner .section-inner { text-align: center; }
+    .cta-banner h2 {
+      font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+    .cta-banner p { color: var(--muted); margin-bottom: 2rem; }
+
+    /* FOOTER */
+    footer {
+      padding: 2rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.825rem;
+      border-top: 1px solid var(--border);
+    }
+    footer a { color: var(--accent-light); }
+
+    @media (max-width: 600px) {
+      .bio-box { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">Protime <span>Consulting</span></div>
+    <a href="https://buy.stripe.com/test_14A7sK2Ny8tS26dg4VgjC00" class="nav-cta">Get Started</a>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">AI Agent Infrastructure</div>
+    <h1>Your Business, Running on AI Agents —<br /><em>Configured and Ready in a Week.</em></h1>
+    <p>Protime Consulting installs, configures, and deploys a custom AI agent infrastructure for your business. Not a chatbot. Not a generic tool. Agents built around how your business actually operates.</p>
+    <div class="hero-actions">
+      <a href="#pricing" class="btn-primary">See Pricing →</a>
+      <a href="mailto:ivan@protimeconsulting.com" class="btn-secondary">Book a Call</a>
+    </div>
+  </div>
+
+  <!-- PROOF BAR -->
+  <div class="proof-bar">
+    Built by <strong>Ivan Avelancio Jr.</strong> — <strong>15+ years</strong> in Microsoft enterprise AI &nbsp;·&nbsp; Former Microsoft Corporation &nbsp;·&nbsp; Copilot, M365, Azure, Intune
+  </div>
+
+  <!-- WHY THIS IS DIFFERENT -->
+  <section>
+    <div class="section-inner">
+      <div class="section-label">Why This Is Different</div>
+      <div class="section-title">Enterprise-grade AI infrastructure.<br />Built for the serious operator.</div>
+      <p class="section-sub">Every other OpenClaw setup service is run by a technical freelancer or a content creator. Protime brings 15 years of Microsoft enterprise AI deployment to your business.</p>
+      <div class="props-grid">
+        <div class="prop-card">
+          <div class="prop-icon">🔧</div>
+          <h3>Built for your workflow, not the demo.</h3>
+          <p>We configure a persistent, always-on agent platform to your actual business stack. Integrations, automations, and agents that reflect how your team works.</p>
+        </div>
+        <div class="prop-card">
+          <div class="prop-icon">⚡</div>
+          <h3>Production-ready in days, not months.</h3>
+          <p>Setup takes 5–8 business days from kickoff. Ivan handles the build personally. You get a working system and a 1-hour onboarding session.</p>
+        </div>
+        <div class="prop-card">
+          <div class="prop-icon">🧠</div>
+          <h3>Agents that do real work.</h3>
+          <p>Custom skills and role-specific sub-agents built for your actual workflows — whether that's BD, client comms, or internal ops. Not templates.</p>
+        </div>
+        <div class="prop-card">
+          <div class="prop-icon">🔄</div>
+          <h3>Ongoing optimization, not set-and-forget.</h3>
+          <p>Monthly support keeps your system updated, optimized, and improving. LLM tuning, prompt refinement, and up to 2 adjustments per month.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DIY COST CALC -->
+  <section style="padding-top:0;">
+    <div class="section-inner">
+      <div class="section-label">The Real Cost of DIY</div>
+      <div class="section-title">Most owners spend 50+ hours and never finish.</div>
+      <p class="section-sub">The setup alone requires Linux configuration, API integration, identity design, automation logic, and operational architecture. Here's what DIY actually costs.</p>
+      <div class="calc-box">
+        <div class="calc-row">
+          <span class="label">Research & hardware selection</span>
+          <span class="value">6–10 hrs</span>
+        </div>
+        <div class="calc-row">
+          <span class="label">OpenClaw install & gateway config</span>
+          <span class="value">6–12 hrs</span>
+        </div>
+        <div class="calc-row">
+          <span class="label">API keys, OAuth, integrations</span>
+          <span class="value">5–8 hrs</span>
+        </div>
+        <div class="calc-row">
+          <span class="label">Persona & identity files</span>
+          <span class="value">4–6 hrs</span>
+        </div>
+        <div class="calc-row">
+          <span class="label">Custom skill authoring</span>
+          <span class="value">4–8 hrs</span>
+        </div>
+        <div class="calc-row">
+          <span class="label">Testing, debugging, iteration</span>
+          <span class="value">8–15 hrs</span>
+        </div>
+        <div class="calc-row">
+          <span class="label">Total realistic estimate</span>
+          <span class="value">41–75 hrs</span>
+        </div>
+        <div class="calc-row highlight">
+          <span class="label">Value of your time @ $150/hr</span>
+          <span class="value">$6,150 – $11,250</span>
+        </div>
+        <div class="calc-row highlight">
+          <span class="label">Protime does it for</span>
+          <span class="value">$2,000</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing">
+    <div class="section-inner">
+      <div class="section-label">Pricing</div>
+      <div class="section-title">Two tiers. No fluff.</div>
+      <p class="section-sub">Pick the tier that fits your business. Both include Ivan's personal build and handoff. Upgrade anytime.</p>
+      <div class="pricing-grid">
+
+        <!-- STARTER -->
+        <div class="pricing-card">
+          <div class="pricing-tier">Starter</div>
+          <div class="pricing-price">$2,000 <span>one-time</span></div>
+          <div class="pricing-desc">Full setup for solo operators, consultants, and small service businesses ready to run AI infrastructure.</div>
+          <ul class="pricing-features">
+            <li>Full OpenClaw installation & device configuration</li>
+            <li>Base connectors (email, calendar, CRM)</li>
+            <li>3 custom skills built and deployed</li>
+            <li>2 role-specific sub-agents configured</li>
+            <li>1-hour onboarding session with Ivan</li>
+            <li>Documentation handoff</li>
+            <li>Delivered in 5–8 business days</li>
+          </ul>
+          <a href="https://buy.stripe.com/test_14A7sK2Ny8tS26dg4VgjC00" class="btn-secondary">Get Started →</a>
+        </div>
+
+        <!-- EXECUTIVE -->
+        <div class="pricing-card featured">
+          <div class="featured-badge">Most Popular</div>
+          <div class="pricing-tier">Executive</div>
+          <div class="pricing-price">$3,500 <span>one-time</span></div>
+          <div class="pricing-desc">Full multi-agent AI operating system for established businesses running on Microsoft 365.</div>
+          <ul class="pricing-features">
+            <li>Everything in Starter</li>
+            <li>Up to 5 agents with defined roles</li>
+            <li>Full M365 integration (Copilot, Teams, SharePoint)</li>
+            <li>LinkedIn + custom API integrations</li>
+            <li>Webhook routing & remote access setup</li>
+            <li>AgentMail inbox configuration</li>
+            <li>Full persona & identity files authored</li>
+            <li>60-day onboarding support</li>
+          </ul>
+          <a href="https://buy.stripe.com/test_dRm14m87SbG4bGNdWNgjC01" class="btn-primary">Get Started →</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SUPPORT TIERS -->
+  <section style="padding-top:0;">
+    <div class="section-inner">
+      <div class="section-label">Ongoing Support</div>
+      <div class="section-title">Keep your agents sharp.</div>
+      <p class="section-sub">Month-to-month. Cancel anytime. Your AI infrastructure evolves with your business.</p>
+      <div class="support-grid">
+
+        <div class="pricing-card">
+          <div class="pricing-tier">Support — Starter</div>
+          <div class="pricing-price">$350 <span>/ month</span></div>
+          <div class="pricing-desc">For Starter setup clients. Keeps your system running and improving.</div>
+          <ul class="pricing-features">
+            <li>Code maintenance & platform updates</li>
+            <li>LLM optimization & prompt refinement</li>
+            <li>Up to 2 minor skill/agent changes per month</li>
+            <li>Priority support response</li>
+          </ul>
+          <a href="https://buy.stripe.com/test_8x2bJ03RC11q6mt6ulgjC02" class="btn-secondary">Subscribe →</a>
+        </div>
+
+        <div class="pricing-card featured">
+          <div class="pricing-tier">Support — Executive</div>
+          <div class="pricing-price">$500 <span>/ month</span></div>
+          <div class="pricing-desc">Full AI operations management for Executive tier clients.</div>
+          <ul class="pricing-features">
+            <li>Everything in Starter support</li>
+            <li>M365 & Copilot optimization</li>
+            <li>Monthly strategy sync with Ivan</li>
+            <li>Model cost management</li>
+            <li>Priority response SLA</li>
+          </ul>
+          <a href="https://buy.stripe.com/test_6oU14mbk425u3ah1a1gjC03" class="btn-primary">Subscribe →</a>
+        </div>
+
+        <div class="pricing-card">
+          <div class="pricing-tier">Cloud Hosting Add-on</div>
+          <div class="pricing-price">$49 <span>/ month</span></div>
+          <div class="pricing-desc">Protime-managed cloud hosting. No hardware needed — we handle everything.</div>
+          <ul class="pricing-features">
+            <li>Dedicated cloud server provisioned by Protime</li>
+            <li>Monitoring, snapshots & backups</li>
+            <li>Remote access management</li>
+            <li>99.99% uptime infrastructure</li>
+          </ul>
+          <a href="https://buy.stripe.com/test_6oU4gyag0fWk5ip9GxgjC04" class="btn-secondary">Add Hosting →</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT IVAN -->
+  <section>
+    <div class="section-inner">
+      <div class="section-label">Who Builds This</div>
+      <div class="section-title">Built by someone who's done this at scale.</div>
+      <p class="section-sub" style="margin-bottom:2rem;">Every setup is delivered personally by Ivan — not a contractor, not a junior dev.</p>
+      <div class="bio-box">
+        <div class="bio-avatar">IA</div>
+        <div>
+          <div class="bio-name">Ivan Avelancio Jr.</div>
+          <div class="bio-title">Founder, Protime Consulting Inc. | Former Microsoft Corporation</div>
+          <div class="bio-text">15+ years in Microsoft enterprise technology. 7 years at Microsoft Corporation. Deep expertise in AI adoption, Copilot, M365, Intune, endpoint management, and digital transformation. Ivan has built AI adoption programs for organizations at scale — and now brings that same infrastructure to serious business owners who want an AI operating system, not a weekend experiment.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BANNER -->
+  <section class="cta-banner">
+    <div class="section-inner">
+      <h2>Ready to Build?</h2>
+      <p>If your AI stack is still a collection of unconnected tools, this is the fix.<br />One engagement, one setup, a system that works.</p>
+      <div class="hero-actions">
+        <a href="https://buy.stripe.com/test_14A7sK2Ny8tS26dg4VgjC00" class="btn-primary">Get Started — $2,000 →</a>
+        <a href="mailto:ivan@protimeconsulting.com" class="btn-secondary">Book a 20-Min Call</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 Protime Consulting Inc. · Philadelphia, PA · <a href="https://protimeconsulting.com">protimeconsulting.com</a> · <a href="mailto:ivan@protimeconsulting.com">ivan@protimeconsulting.com</a></p>
+  </footer>
+
+</body>
+</html>
