@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Get Started | Protime Consulting</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #0a0a0a; --dark: #111318; --card: #16191f; --border: #23272f;
+      --accent: #2563eb; --accent-light: #3b82f6; --text: #e8eaf0;
+      --muted: #8b91a0; --white: #fff; --green: #22c55e;
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--black); color: var(--text); min-height: 100vh; }
+
+    nav {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.25rem 2rem; border-bottom: 1px solid var(--border);
+      background: rgba(10,10,10,0.97); position: sticky; top: 0; z-index: 100;
+    }
+    .nav-logo { font-weight: 700; font-size: 1rem; }
+    .nav-logo span { color: var(--accent-light); }
+    .nav-back { font-size: 0.875rem; color: var(--muted); cursor: pointer; transition: color 0.2s; }
+    .nav-back:hover { color: var(--text); }
+
+    .page { max-width: 960px; margin: 0 auto; padding: 3rem 1.5rem 6rem; }
+    h1 { font-size: 2rem; font-weight: 800; letter-spacing: -0.02em; color: var(--white); margin-bottom: 0.5rem; }
+    .subtitle { color: var(--muted); margin-bottom: 3rem; font-size: 1rem; }
+
+    .step-label {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--accent-light); margin-bottom: 1rem;
+    }
+
+    /* PACKAGES */
+    .packages { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2.5rem; }
+    @media (max-width: 600px) { .packages { grid-template-columns: 1fr; } }
+
+    .pkg-card {
+      background: var(--card); border: 2px solid var(--border); border-radius: 14px;
+      padding: 1.75rem; cursor: pointer; transition: border-color 0.2s; position: relative;
+    }
+    .pkg-card:hover { border-color: rgba(59,130,246,0.4); }
+    .pkg-card.selected { border-color: var(--accent); background: linear-gradient(135deg, #16191f, #111b2e); }
+    .badge {
+      position: absolute; top: -1px; right: 1.5rem;
+      background: var(--accent); color: var(--white);
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; padding: 0.25rem 0.7rem; border-radius: 0 0 6px 6px;
+    }
+    .pkg-name { font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: 0.2rem; }
+    .pkg-tagline { font-size: 0.775rem; color: var(--accent-light); font-weight: 600; margin-bottom: 0.75rem; }
+    .pkg-desc { font-size: 0.825rem; color: var(--muted); margin-bottom: 1rem; line-height: 1.5; }
+    .pkg-price { font-size: 1.75rem; font-weight: 800; color: var(--white); letter-spacing: -0.02em; }
+    .pkg-price span { font-size: 0.9rem; font-weight: 500; color: var(--muted); }
+    .pkg-disclaimer { font-size: 0.72rem; color: var(--muted); margin-top: 0.6rem; line-height: 1.4; opacity: 0.75; }
+    .select-indicator { margin-top: 1rem; font-size: 0.8rem; font-weight: 600; color: var(--muted); display: flex; align-items: center; gap: 0.4rem; }
+    .pkg-card.selected .select-indicator { color: var(--accent-light); }
+    .check { width: 16px; height: 16px; border: 2px solid var(--border); border-radius: 50%; flex-shrink: 0; transition: all 0.2s; }
+    .pkg-card.selected .check { background: var(--accent); border-color: var(--accent); }
+
+    /* PAYMENT MODES */
+    .payment-modes { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2.5rem; }
+    @media (max-width: 500px) { .payment-modes { grid-template-columns: 1fr; } }
+
+    .mode-card {
+      background: var(--card); border: 2px solid var(--border); border-radius: 12px;
+      padding: 1.25rem 1.5rem; cursor: pointer; transition: border-color 0.2s;
+    }
+    .mode-card:hover { border-color: rgba(59,130,246,0.4); }
+    .mode-card.selected { border-color: var(--accent); }
+    .mode-title { font-size: 0.95rem; font-weight: 700; color: var(--white); margin-bottom: 0.25rem; }
+    .mode-detail { font-size: 0.825rem; color: var(--muted); }
+    .mode-detail.highlight { color: var(--accent-light); font-weight: 500; }
+
+    /* ADDON CARDS */
+    .addons-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; margin-bottom: 2.5rem; }
+    @media (max-width: 600px) { .addons-grid { grid-template-columns: 1fr; } }
+
+    .addon-card {
+      background: var(--card); border: 2px solid var(--border); border-radius: 12px;
+      padding: 1.1rem 1.25rem; cursor: pointer; transition: border-color 0.2s;
+      display: flex; gap: 0.85rem; align-items: flex-start;
+    }
+    .addon-card:hover { border-color: rgba(59,130,246,0.35); }
+    .addon-card.selected { border-color: var(--accent); }
+    .addon-card.preselected-card { border-color: rgba(59,130,246,0.3); }
+    .addon-check {
+      width: 18px; height: 18px; border: 2px solid var(--border); border-radius: 4px;
+      flex-shrink: 0; margin-top: 2px; transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .addon-card.selected .addon-check { background: var(--accent); border-color: var(--accent); }
+    .addon-check-inner { content: ''; font-size: 0.7rem; color: white; font-weight: 700; display: none; }
+    .addon-card.selected .addon-check-inner { display: block; }
+    .addon-info { flex: 1; }
+    .addon-name { font-size: 0.9rem; font-weight: 600; color: var(--white); }
+    .addon-desc { font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem; line-height: 1.4; }
+    .addon-price { font-size: 0.875rem; font-weight: 700; color: var(--accent-light); margin-top: 0.35rem; }
+    .addon-pre-tag {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      background: rgba(37,99,235,0.18); color: var(--accent-light);
+      padding: 0.15rem 0.5rem; border-radius: 4px; margin-bottom: 0.3rem; display: inline-block;
+    }
+
+    /* STANDALONE */
+    .standalone-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2.5rem; }
+    @media (max-width: 680px) { .standalone-grid { grid-template-columns: 1fr; } }
+
+    .standalone-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+      padding: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem;
+    }
+    .standalone-name { font-size: 0.9rem; font-weight: 700; color: var(--white); }
+    .standalone-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.4; flex: 1; }
+    .standalone-price { font-size: 1.1rem; font-weight: 800; color: var(--white); }
+    .standalone-btn {
+      margin-top: 0.5rem; background: transparent; border: 1px solid var(--accent);
+      color: var(--accent-light); padding: 0.6rem 1rem; border-radius: 8px;
+      font-size: 0.85rem; font-weight: 600; cursor: pointer; font-family: inherit;
+      transition: background 0.2s; text-align: center; text-decoration: none; display: block;
+    }
+    .standalone-btn:hover { background: rgba(37,99,235,0.15); }
+
+    /* SUMMARY */
+    .layout { display: grid; grid-template-columns: 1fr 320px; gap: 2.5rem; align-items: start; }
+    @media (max-width: 760px) { .layout { grid-template-columns: 1fr; } .summary-box { position: static; } }
+
+    .summary-box {
+      background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+      padding: 1.75rem; position: sticky; top: 80px;
+    }
+    .summary-title { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.25rem; }
+    .summary-line { display: flex; justify-content: space-between; font-size: 0.875rem; padding: 0.5rem 0; border-bottom: 1px solid var(--border); }
+    .summary-line:last-of-type { border-bottom: none; }
+    .summary-line .lbl { color: var(--muted); }
+    .summary-line .val { font-weight: 600; color: var(--text); }
+    .summary-total { display: flex; justify-content: space-between; padding-top: 1rem; margin-top: 0.5rem; border-top: 1px solid var(--border); }
+    .summary-total .lbl { font-weight: 700; color: var(--white); }
+    .summary-total .val { font-size: 1.3rem; font-weight: 800; color: var(--white); }
+    .summary-note { font-size: 0.775rem; color: var(--muted); margin-top: 0.75rem; line-height: 1.5; }
+
+    .checkout-btn {
+      width: 100%; background: var(--accent); color: var(--white);
+      padding: 1rem; border-radius: 10px; border: none; cursor: pointer;
+      font-size: 1rem; font-weight: 700; margin-top: 1.25rem;
+      transition: background 0.2s, transform 0.15s; font-family: inherit;
+    }
+    .checkout-btn:hover:not(:disabled) { background: var(--accent-light); transform: translateY(-1px); }
+    .checkout-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+    .empty-summary { color: var(--muted); font-size: 0.875rem; text-align: center; padding: 1rem 0; }
+    .err { color: #f87171; font-size: 0.85rem; margin-top: 0.75rem; text-align: center; }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 0 0 2.5rem; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Protime <span>Consulting</span></div>
+  <div class="nav-back" onclick="history.back()">← Back</div>
+</nav>
+
+<div class="page">
+  <h1>Configure Your Setup</h1>
+  <p class="subtitle">Select a package, choose your payment option, and add what your business needs — all in one checkout.</p>
+
+  <div class="layout">
+    <div class="left-col">
+
+      <!-- STEP 1: PACKAGE -->
+      <div class="step-label">Step 1 — Choose your package</div>
+      <div class="packages" id="packages">
+        <div class="empty-summary">Loading…</div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- STEP 2: PAYMENT MODE -->
+      <div class="step-label">Step 2 — Payment option</div>
+      <div class="payment-modes">
+        <div class="mode-card selected" data-mode="full" onclick="selectMode('full')">
+          <div class="mode-title">Pay in Full</div>
+          <div class="mode-detail" id="full-detail">One payment, done.</div>
+        </div>
+        <div class="mode-card" data-mode="deposit" onclick="selectMode('deposit')">
+          <div class="mode-title">Start for $500</div>
+          <div class="mode-detail highlight" id="deposit-detail">$500 today, rest in monthly installments.</div>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- STEP 3: PRESELECTED (Support + Hosting) -->
+      <div class="step-label">Step 3 — Included services (preselected — deselect to remove)</div>
+      <div class="addons-grid" id="preselectedAddons">
+        <div class="empty-summary">Select a package first</div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- STEP 4: OPTIONAL ADD-ONS -->
+      <div class="step-label">Step 4 — Optional add-ons</div>
+      <div class="addons-grid" id="optionalAddons">
+        <div class="empty-summary">Select a package first</div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- STANDALONE -->
+      <div class="step-label">Standalone services — no package required</div>
+      <div class="standalone-grid" id="standaloneLinks">
+        <div class="empty-summary">Loading…</div>
+      </div>
+
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="right-col">
+      <div class="summary-box">
+        <div class="summary-title">Order Summary</div>
+        <div id="summary-lines">
+          <div class="empty-summary">Select a package to begin</div>
+        </div>
+        <div id="summary-total" style="display:none">
+          <div class="summary-total">
+            <span class="lbl">Due today</span>
+            <span class="val" id="total-display">$0</span>
+          </div>
+          <div class="summary-note" id="recurring-note"></div>
+        </div>
+        <button class="checkout-btn" id="checkoutBtn" disabled onclick="goToCheckout()">
+          Continue to Checkout →
+        </button>
+        <div class="err" id="err-msg"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let catalog = null;
+  let selectedPackage = null;
+  let selectedMode = 'full';
+  let includeSupport = true;
+  let includeHosting = true;
+  let selectedAddons = new Set();
+
+  const API = 'https://screenai.tailff380a.ts.net/checkout';
+
+  async function loadCatalog() {
+    try {
+      const res = await fetch(`${API}/catalog`);
+      catalog = await res.json();
+      renderPackages();
+      renderPreselected();
+      renderOptional();
+      renderStandalone();
+    } catch(e) {
+      document.getElementById('packages').innerHTML = '<div style="color:#f87171">Failed to load catalog. Refresh to try again.</div>';
+    }
+  }
+
+  function renderPackages() {
+    const el = document.getElementById('packages');
+    el.innerHTML = catalog.packages.map((pkg, i) => `
+      <div class="pkg-card" data-id="${pkg.id}" onclick="selectPackage('${pkg.id}')">
+        ${i === 1 ? '<div class="badge">Most Popular</div>' : ''}
+        <div class="pkg-name">${pkg.name}</div>
+        <div class="pkg-tagline">${pkg.tagline}</div>
+        <div class="pkg-desc">${pkg.description}</div>
+        <div class="pkg-price">$${pkg.price_full.toLocaleString()} <span>full</span></div>
+        <div class="pkg-disclaimer">☁ ${pkg.disclaimer}</div>
+        <div class="select-indicator">
+          <div class="check"></div>
+          <span>Select this package</span>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function renderPreselected() {
+    const el = document.getElementById('preselectedAddons');
+    if (!selectedPackage || !catalog) {
+      el.innerHTML = '<div class="empty-summary">Select a package first</div>';
+      return;
+    }
+    const pkg = catalog.packages.find(p => p.id === selectedPackage);
+
+    // Support card (dynamic per package)
+    const supportHtml = `
+      <div class="addon-card preselected-card ${includeSupport ? 'selected' : ''}" onclick="toggleSupport()">
+        <div class="addon-check"><span class="addon-check-inner">✓</span></div>
+        <div class="addon-info">
+          <div class="addon-pre-tag">Preselected</div>
+          <div class="addon-name">${pkg.support_name}</div>
+          <div class="addon-desc">Prompt tuning, connector health, agent updates. Priority support. Cancel anytime.</div>
+          <div class="addon-price">$${pkg.support_amount}/mo recurring</div>
+        </div>
+      </div>
+    `;
+
+    // Cloud hosting card
+    const hostingAddon = catalog.preselected_addons.find(a => a.id === 'cloud_hosting');
+    const hostingHtml = hostingAddon ? `
+      <div class="addon-card preselected-card ${includeHosting ? 'selected' : ''}" onclick="toggleHosting()">
+        <div class="addon-check"><span class="addon-check-inner">✓</span></div>
+        <div class="addon-info">
+          <div class="addon-pre-tag">Preselected</div>
+          <div class="addon-name">${hostingAddon.name}</div>
+          <div class="addon-desc">${hostingAddon.description}</div>
+          <div class="addon-price">$${hostingAddon.amount}/mo recurring</div>
+        </div>
+      </div>
+    ` : '';
+
+    el.innerHTML = supportHtml + hostingHtml;
+  }
+
+  function renderOptional() {
+    const el = document.getElementById('optionalAddons');
+    if (!selectedPackage || !catalog) {
+      el.innerHTML = '<div class="empty-summary">Select a package first</div>';
+      return;
+    }
+    el.innerHTML = catalog.optional_addons.map(a => `
+      <div class="addon-card ${selectedAddons.has(a.id) ? 'selected' : ''}" onclick="toggleAddon('${a.id}')">
+        <div class="addon-check"><span class="addon-check-inner">✓</span></div>
+        <div class="addon-info">
+          <div class="addon-name">${a.name}</div>
+          <div class="addon-desc">${a.description}</div>
+          <div class="addon-price">$${a.amount}${a.recurring ? '/mo' : ' one-time'}</div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function renderStandalone() {
+    const el = document.getElementById('standaloneLinks');
+    if (!catalog || !catalog.standalone) { el.innerHTML = ''; return; }
+    el.innerHTML = catalog.standalone.map(s => `
+      <div class="standalone-card">
+        <div class="standalone-name">${s.name}</div>
+        <div class="standalone-desc">${s.description}</div>
+        <div class="standalone-price">$${s.amount.toLocaleString()}</div>
+        <a class="standalone-btn" href="${s.link}" target="_blank">Buy Now →</a>
+      </div>
+    `).join('');
+  }
+
+  function selectPackage(id) {
+    selectedPackage = id;
+    includeSupport = true;
+    includeHosting = true;
+    selectedAddons.clear();
+
+    document.querySelectorAll('.pkg-card').forEach(c => c.classList.remove('selected'));
+    document.querySelector(`.pkg-card[data-id="${id}"]`).classList.add('selected');
+
+    const pkg = catalog.packages.find(p => p.id === id);
+    document.getElementById('full-detail').textContent = `$${pkg.price_full.toLocaleString()} — one payment.`;
+    document.getElementById('deposit-detail').textContent = `${pkg.installment_label}`;
+
+    renderPreselected();
+    renderOptional();
+    updateSummary();
+  }
+
+  function selectMode(mode) {
+    selectedMode = mode;
+    document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
+    document.querySelector(`.mode-card[data-mode="${mode}"]`).classList.add('selected');
+    updateSummary();
+  }
+
+  function toggleSupport() {
+    includeSupport = !includeSupport;
+    renderPreselected();
+    updateSummary();
+  }
+
+  function toggleHosting() {
+    includeHosting = !includeHosting;
+    renderPreselected();
+    updateSummary();
+  }
+
+  function toggleAddon(id) {
+    if (selectedAddons.has(id)) selectedAddons.delete(id);
+    else selectedAddons.add(id);
+    renderOptional();
+    updateSummary();
+  }
+
+  function updateSummary() {
+    const linesEl = document.getElementById('summary-lines');
+    const totalEl = document.getElementById('summary-total');
+    const btn = document.getElementById('checkoutBtn');
+
+    if (!selectedPackage) {
+      linesEl.innerHTML = '<div class="empty-summary">Select a package to begin</div>';
+      totalEl.style.display = 'none';
+      btn.disabled = true;
+      return;
+    }
+
+    const pkg = catalog.packages.find(p => p.id === selectedPackage);
+    let lines = [];
+    let todayTotal = 0;
+    let recurringLines = [];
+
+    if (selectedMode === 'full') {
+      lines.push({ label: pkg.name, val: `$${pkg.price_full.toLocaleString()}` });
+      todayTotal += pkg.price_full;
+    } else {
+      lines.push({ label: `${pkg.name} — Deposit`, val: '$500' });
+      todayTotal += 500;
+      recurringLines.push(pkg.installment_label);
+    }
+
+    if (includeSupport) {
+      lines.push({ label: `${pkg.support_name}`, val: `$${pkg.support_amount}/mo` });
+      recurringLines.push(`$${pkg.support_amount}/mo support`);
+    }
+
+    if (includeHosting) {
+      lines.push({ label: 'Managed Cloud Hosting', val: '$49/mo' });
+      recurringLines.push('$49/mo hosting');
+    }
+
+    for (const id of selectedAddons) {
+      const addon = catalog.optional_addons.find(a => a.id === id);
+      if (!addon) continue;
+      if (addon.recurring) {
+        lines.push({ label: addon.name, val: `$${addon.amount}/mo` });
+        recurringLines.push(`$${addon.amount}/mo`);
+      } else {
+        lines.push({ label: addon.name, val: `$${addon.amount}` });
+        todayTotal += addon.amount;
+      }
+    }
+
+    linesEl.innerHTML = lines.map(l =>
+      `<div class="summary-line"><span class="lbl">${l.label}</span><span class="val">${l.val}</span></div>`
+    ).join('');
+
+    document.getElementById('total-display').textContent = `$${todayTotal.toLocaleString()}`;
+
+    const noteEl = document.getElementById('recurring-note');
+    if (recurringLines.length > 0) {
+      noteEl.innerHTML = `<strong style="color:var(--accent-light)">Recurring:</strong> ${recurringLines.join(' · ')}. Cancel anytime.`;
+    } else {
+      noteEl.textContent = 'One-time charge. No subscription.';
+    }
+
+    totalEl.style.display = 'block';
+    btn.disabled = false;
+  }
+
+  async function goToCheckout() {
+    const btn = document.getElementById('checkoutBtn');
+    const errEl = document.getElementById('err-msg');
+    btn.disabled = true;
+    btn.textContent = 'Preparing checkout…';
+    errEl.textContent = '';
+
+    try {
+      const res = await fetch(`${API}/create-checkout`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          package_id: selectedPackage,
+          payment_mode: selectedMode,
+          include_support: includeSupport,
+          include_hosting: includeHosting,
+          addons: [...selectedAddons],
+        })
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error(data.error || 'Unknown error');
+      }
+    } catch (e) {
+      errEl.textContent = 'Something went wrong: ' + e.message;
+      btn.disabled = false;
+      btn.textContent = 'Continue to Checkout →';
+    }
+  }
+
+  loadCatalog();
+</script>
+</body>
+</html>
