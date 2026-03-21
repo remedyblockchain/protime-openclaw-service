@@ -3,494 +3,503 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Get Started | Protime Consulting</title>
+  <title>Order — AI Agent Infrastructure | Protime Consulting</title>
+  <meta name="description" content="Select your OpenClaw AI agent infrastructure package and add-ons. Secure checkout via Stripe." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --black: #0a0a0a; --dark: #111318; --card: #16191f; --border: #23272f;
-      --accent: #2563eb; --accent-light: #3b82f6; --text: #e8eaf0;
-      --muted: #8b91a0; --white: #fff; --green: #22c55e;
+      --black: #0a0a0a;
+      --dark: #111318;
+      --card: #16191f;
+      --card-alt: #13161c;
+      --border: #23272f;
+      --accent: #2563eb;
+      --accent-light: #3b82f6;
+      --text: #e8eaf0;
+      --muted: #8b91a0;
+      --white: #ffffff;
+      --green: #22c55e;
+      --amber: #f59e0b;
+      --red: #ef4444;
     }
-    body { font-family: 'Inter', sans-serif; background: var(--black); color: var(--text); min-height: 100vh; }
+    body { font-family: 'Inter', sans-serif; background: var(--black); color: var(--text); line-height: 1.6; }
+    a { color: inherit; text-decoration: none; }
 
-    nav {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 1.25rem 2rem; border-bottom: 1px solid var(--border);
-      background: rgba(10,10,10,0.97); position: sticky; top: 0; z-index: 100;
-    }
+    /* NAV */
+    nav { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 2rem; border-bottom: 1px solid var(--border); background: rgba(10,10,10,0.97); }
     .nav-logo { font-weight: 700; font-size: 1rem; }
     .nav-logo span { color: var(--accent-light); }
-    .nav-back { font-size: 0.875rem; color: var(--muted); cursor: pointer; transition: color 0.2s; }
+    .nav-back { font-size: 0.875rem; color: var(--muted); display: flex; align-items: center; gap: 0.4rem; transition: color 0.2s; }
     .nav-back:hover { color: var(--text); }
 
-    .page { max-width: 960px; margin: 0 auto; padding: 3rem 1.5rem 6rem; }
-    h1 { font-size: 2rem; font-weight: 800; letter-spacing: -0.02em; color: var(--white); margin-bottom: 0.5rem; }
-    .subtitle { color: var(--muted); margin-bottom: 3rem; font-size: 1rem; }
+    /* LAYOUT */
+    .page { max-width: 960px; margin: 0 auto; padding: 3rem 2rem 5rem; }
+    .page-title { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 800; color: var(--white); letter-spacing: -0.02em; margin-bottom: 0.5rem; }
+    .page-sub { font-size: 0.95rem; color: var(--muted); margin-bottom: 3rem; }
 
-    .step-label {
-      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
-      text-transform: uppercase; color: var(--accent-light); margin-bottom: 1rem;
-    }
+    /* SECTION HEADERS */
+    .section-head { margin-bottom: 1.25rem; }
+    .section-head h2 { font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: 0.2rem; }
+    .section-head p { font-size: 0.85rem; color: var(--muted); }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
 
-    /* PACKAGES */
-    .packages { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2.5rem; }
-    @media (max-width: 600px) { .packages { grid-template-columns: 1fr; } }
+    /* PACKAGE CARDS */
+    .pkg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1rem; }
+    @media (max-width: 640px) { .pkg-grid { grid-template-columns: 1fr; } }
 
-    .pkg-card {
-      background: var(--card); border: 2px solid var(--border); border-radius: 14px;
-      padding: 1.75rem; cursor: pointer; transition: border-color 0.2s; position: relative;
-    }
-    .pkg-card:hover { border-color: rgba(59,130,246,0.4); }
-    .pkg-card.selected { border-color: var(--accent); background: linear-gradient(135deg, #16191f, #111b2e); }
-    .badge {
-      position: absolute; top: -1px; right: 1.5rem;
-      background: var(--accent); color: var(--white);
-      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em;
-      text-transform: uppercase; padding: 0.25rem 0.7rem; border-radius: 0 0 6px 6px;
-    }
-    .pkg-name { font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: 0.2rem; }
-    .pkg-tagline { font-size: 0.775rem; color: var(--accent-light); font-weight: 600; margin-bottom: 0.75rem; }
-    .pkg-desc { font-size: 0.825rem; color: var(--muted); margin-bottom: 1rem; line-height: 1.5; }
-    .pkg-price { font-size: 1.75rem; font-weight: 800; color: var(--white); letter-spacing: -0.02em; }
-    .pkg-price span { font-size: 0.9rem; font-weight: 500; color: var(--muted); }
-    .pkg-disclaimer { font-size: 0.72rem; color: var(--muted); margin-top: 0.6rem; line-height: 1.4; opacity: 0.75; }
-    .select-indicator { margin-top: 1rem; font-size: 0.8rem; font-weight: 600; color: var(--muted); display: flex; align-items: center; gap: 0.4rem; }
-    .pkg-card.selected .select-indicator { color: var(--accent-light); }
-    .check { width: 16px; height: 16px; border: 2px solid var(--border); border-radius: 50%; flex-shrink: 0; transition: all 0.2s; }
-    .pkg-card.selected .check { background: var(--accent); border-color: var(--accent); }
-
-    /* PAYMENT MODES */
-    .payment-modes { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2.5rem; }
-    @media (max-width: 500px) { .payment-modes { grid-template-columns: 1fr; } }
-
-    .mode-card {
-      background: var(--card); border: 2px solid var(--border); border-radius: 12px;
-      padding: 1.25rem 1.5rem; cursor: pointer; transition: border-color 0.2s;
-    }
-    .mode-card:hover { border-color: rgba(59,130,246,0.4); }
-    .mode-card.selected { border-color: var(--accent); }
-    .mode-title { font-size: 0.95rem; font-weight: 700; color: var(--white); margin-bottom: 0.25rem; }
-    .mode-detail { font-size: 0.825rem; color: var(--muted); }
-    .mode-detail.highlight { color: var(--accent-light); font-weight: 500; }
+    .pkg-card { background: var(--card); border: 2px solid var(--border); border-radius: 14px; padding: 1.75rem; cursor: pointer; transition: border-color 0.2s, background 0.2s; position: relative; }
+    .pkg-card:hover { border-color: var(--accent-light); }
+    .pkg-card.selected { border-color: var(--accent); background: linear-gradient(160deg, #16191f 0%, #111b2e 100%); }
+    .pkg-card .popular-tag { position: absolute; top: -1px; right: 1.25rem; background: var(--accent); color: var(--white); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.25rem 0.75rem; border-radius: 0 0 8px 8px; }
+    .pkg-card .radio { width: 1.1rem; height: 1.1rem; border-radius: 50%; border: 2px solid var(--border); background: transparent; flex-shrink: 0; margin-top: 0.15rem; transition: border-color 0.2s, background 0.2s; }
+    .pkg-card.selected .radio { border-color: var(--accent); background: var(--accent); box-shadow: inset 0 0 0 3px var(--card); }
+    .pkg-card-top { display: flex; gap: 0.75rem; align-items: flex-start; margin-bottom: 1rem; }
+    .pkg-card-info h3 { font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: 0.15rem; }
+    .pkg-card-info .pkg-price { font-size: 1.5rem; font-weight: 800; color: var(--white); letter-spacing: -0.02em; }
+    .pkg-card-info .pkg-price span { font-size: 0.8rem; font-weight: 500; color: var(--muted); }
+    .pkg-card-info .pkg-tag { font-size: 0.78rem; color: var(--muted); }
+    .pkg-features { list-style: none; }
+    .pkg-features li { font-size: 0.825rem; color: var(--text); padding: 0.25rem 0; display: flex; gap: 0.5rem; }
+    .pkg-features li::before { content: "✓"; color: var(--green); font-weight: 700; flex-shrink: 0; }
 
     /* ADDON CARDS */
-    .addons-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; margin-bottom: 2.5rem; }
-    @media (max-width: 600px) { .addons-grid { grid-template-columns: 1fr; } }
+    .addons-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
+    .addon-card { background: var(--card); border: 2px solid var(--border); border-radius: 12px; padding: 1.25rem; cursor: pointer; transition: border-color 0.2s; display: flex; gap: 0.75rem; align-items: flex-start; }
+    .addon-card:hover { border-color: var(--accent-light); }
+    .addon-card.selected { border-color: var(--accent); background: rgba(37,99,235,0.06); }
+    .addon-card .checkbox { width: 1rem; height: 1rem; border-radius: 4px; border: 2px solid var(--border); background: transparent; flex-shrink: 0; margin-top: 0.2rem; transition: border-color 0.2s, background 0.2s; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; color: var(--white); }
+    .addon-card.selected .checkbox { border-color: var(--accent); background: var(--accent); }
+    .addon-card.selected .checkbox::after { content: "✓"; }
+    .addon-info h4 { font-size: 0.875rem; font-weight: 700; color: var(--white); margin-bottom: 0.2rem; }
+    .addon-info p { font-size: 0.8rem; color: var(--muted); line-height: 1.45; margin-bottom: 0.4rem; }
+    .addon-info .addon-price { font-size: 0.9rem; font-weight: 700; color: var(--accent-light); }
+    .addon-info .addon-recur { font-size: 0.72rem; color: var(--muted); }
 
-    .addon-card {
-      background: var(--card); border: 2px solid var(--border); border-radius: 12px;
-      padding: 1.1rem 1.25rem; cursor: pointer; transition: border-color 0.2s;
-      display: flex; gap: 0.85rem; align-items: flex-start;
-    }
-    .addon-card:hover { border-color: rgba(59,130,246,0.35); }
-    .addon-card.selected { border-color: var(--accent); }
-    .addon-card.preselected-card { border-color: rgba(59,130,246,0.3); }
-    .addon-check {
-      width: 18px; height: 18px; border: 2px solid var(--border); border-radius: 4px;
-      flex-shrink: 0; margin-top: 2px; transition: all 0.2s;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .addon-card.selected .addon-check { background: var(--accent); border-color: var(--accent); }
-    .addon-check-inner { content: ''; font-size: 0.7rem; color: white; font-weight: 700; display: none; }
-    .addon-card.selected .addon-check-inner { display: block; }
-    .addon-info { flex: 1; }
-    .addon-name { font-size: 0.9rem; font-weight: 600; color: var(--white); }
-    .addon-desc { font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem; line-height: 1.4; }
-    .addon-price { font-size: 0.875rem; font-weight: 700; color: var(--accent-light); margin-top: 0.35rem; }
-    .addon-pre-tag {
-      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
-      background: rgba(37,99,235,0.18); color: var(--accent-light);
-      padding: 0.15rem 0.5rem; border-radius: 4px; margin-bottom: 0.3rem; display: inline-block;
-    }
-
-    /* STANDALONE */
-    .standalone-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2.5rem; }
-    @media (max-width: 680px) { .standalone-grid { grid-template-columns: 1fr; } }
-
-    .standalone-card {
-      background: var(--card); border: 1px solid var(--border); border-radius: 12px;
-      padding: 1.25rem; display: flex; flex-direction: column; gap: 0.5rem;
-    }
-    .standalone-name { font-size: 0.9rem; font-weight: 700; color: var(--white); }
-    .standalone-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.4; flex: 1; }
-    .standalone-price { font-size: 1.1rem; font-weight: 800; color: var(--white); }
-    .standalone-btn {
-      margin-top: 0.5rem; background: transparent; border: 1px solid var(--accent);
-      color: var(--accent-light); padding: 0.6rem 1rem; border-radius: 8px;
-      font-size: 0.85rem; font-weight: 600; cursor: pointer; font-family: inherit;
-      transition: background 0.2s; text-align: center; text-decoration: none; display: block;
-    }
-    .standalone-btn:hover { background: rgba(37,99,235,0.15); }
-
-    /* SUMMARY */
-    .layout { display: grid; grid-template-columns: 1fr 320px; gap: 2.5rem; align-items: start; }
-    @media (max-width: 760px) { .layout { grid-template-columns: 1fr; } .summary-box { position: static; } }
-
-    .summary-box {
-      background: var(--card); border: 1px solid var(--border); border-radius: 14px;
-      padding: 1.75rem; position: sticky; top: 80px;
-    }
-    .summary-title { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.25rem; }
-    .summary-line { display: flex; justify-content: space-between; font-size: 0.875rem; padding: 0.5rem 0; border-bottom: 1px solid var(--border); }
+    /* ORDER SUMMARY */
+    .summary-box { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 1.75rem; position: sticky; top: 1.5rem; }
+    .summary-title { font-size: 0.875rem; font-weight: 700; color: var(--white); margin-bottom: 1.25rem; }
+    .summary-line { display: flex; justify-content: space-between; align-items: baseline; padding: 0.4rem 0; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
     .summary-line:last-of-type { border-bottom: none; }
-    .summary-line .lbl { color: var(--muted); }
-    .summary-line .val { font-weight: 600; color: var(--text); }
-    .summary-total { display: flex; justify-content: space-between; padding-top: 1rem; margin-top: 0.5rem; border-top: 1px solid var(--border); }
-    .summary-total .lbl { font-weight: 700; color: var(--white); }
-    .summary-total .val { font-size: 1.3rem; font-weight: 800; color: var(--white); }
-    .summary-note { font-size: 0.775rem; color: var(--muted); margin-top: 0.75rem; line-height: 1.5; }
+    .summary-line .s-label { color: var(--muted); }
+    .summary-line .s-val { font-weight: 600; color: var(--text); }
+    .summary-line .s-val.green { color: var(--green); }
+    .summary-empty { font-size: 0.85rem; color: var(--muted); font-style: italic; margin-bottom: 1rem; }
+    .summary-total { display: flex; justify-content: space-between; padding-top: 1rem; margin-top: 0.5rem; border-top: 1px solid var(--border); font-weight: 800; color: var(--white); font-size: 1rem; }
+    .summary-total .t-note { font-size: 0.72rem; color: var(--muted); font-weight: 400; }
+    .btn-checkout { display: block; width: 100%; text-align: center; background: var(--accent); color: var(--white); padding: 0.9rem 1.5rem; border-radius: 8px; font-weight: 700; font-size: 1rem; margin-top: 1.25rem; transition: background 0.2s, opacity 0.2s; cursor: pointer; border: none; font-family: inherit; }
+    .btn-checkout:hover:not(:disabled) { background: var(--accent-light); }
+    .btn-checkout:disabled { opacity: 0.4; cursor: not-allowed; }
+    .checkout-note { font-size: 0.75rem; color: var(--muted); text-align: center; margin-top: 0.75rem; }
+    .stripe-badge { display: flex; align-items: center; justify-content: center; gap: 0.4rem; font-size: 0.72rem; color: var(--muted); margin-top: 0.5rem; }
 
-    .checkout-btn {
-      width: 100%; background: var(--accent); color: var(--white);
-      padding: 1rem; border-radius: 10px; border: none; cursor: pointer;
-      font-size: 1rem; font-weight: 700; margin-top: 1.25rem;
-      transition: background 0.2s, transform 0.15s; font-family: inherit;
-    }
-    .checkout-btn:hover:not(:disabled) { background: var(--accent-light); transform: translateY(-1px); }
-    .checkout-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
-    .empty-summary { color: var(--muted); font-size: 0.875rem; text-align: center; padding: 1rem 0; }
-    .err { color: #f87171; font-size: 0.85rem; margin-top: 0.75rem; text-align: center; }
-    .divider { border: none; border-top: 1px solid var(--border); margin: 0 0 2.5rem; }
+    /* TWO-COL LAYOUT */
+    .two-col { display: grid; grid-template-columns: 1fr 340px; gap: 2.5rem; align-items: start; }
+    @media (max-width: 820px) { .two-col { grid-template-columns: 1fr; } .summary-box { position: static; } }
+
+    /* NOTICE */
+    .notice { background: rgba(37,99,235,0.08); border: 1px solid rgba(59,130,246,0.2); border-radius: 8px; padding: 0.85rem 1.1rem; font-size: 0.825rem; color: var(--muted); margin-bottom: 2rem; }
+    .notice strong { color: var(--accent-light); }
+
+    /* STANDALONE SECTION */
+    .standalone-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem; }
+    .standalone-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; display: flex; flex-direction: column; gap: 0.6rem; }
+    .standalone-card h4 { font-size: 0.875rem; font-weight: 700; color: var(--white); }
+    .standalone-card p { font-size: 0.8rem; color: var(--muted); flex: 1; }
+    .standalone-card .s-price { font-size: 1rem; font-weight: 700; color: var(--accent-light); }
+    .btn-standalone { display: block; text-align: center; background: transparent; color: var(--accent-light); border: 1px solid rgba(59,130,246,0.3); border-radius: 6px; padding: 0.5rem 1rem; font-size: 0.825rem; font-weight: 600; transition: background 0.2s; }
+    .btn-standalone:hover { background: rgba(37,99,235,0.08); }
+
+    /* FOOTER */
+    footer { text-align: center; color: var(--muted); font-size: 0.8rem; border-top: 1px solid var(--border); padding: 1.5rem 2rem; }
+    footer a { color: var(--accent-light); }
   </style>
 </head>
 <body>
 
 <nav>
   <div class="nav-logo">Protime <span>Consulting</span></div>
-  <div class="nav-back" onclick="history.back()">← Back</div>
+  <a href="index.html" class="nav-back">← Back to Packages</a>
 </nav>
 
 <div class="page">
-  <h1>Configure Your Setup</h1>
-  <p class="subtitle">Select a package, choose your payment option, and add what your business needs — all in one checkout.</p>
+  <h1 class="page-title">Build Your Package</h1>
+  <p class="page-sub">Select a setup tier, add support and optional services, then check out securely via Stripe.</p>
 
-  <div class="layout">
-    <div class="left-col">
+  <div class="two-col">
 
-      <!-- STEP 1: PACKAGE -->
-      <div class="step-label">Step 1 — Choose your package</div>
-      <div class="packages" id="packages">
-        <div class="empty-summary">Loading…</div>
+    <!-- LEFT — SELECTIONS -->
+    <div>
+
+      <!-- STEP 1: SETUP PACKAGE -->
+      <div class="section-head">
+        <h2>1 — Choose Your Setup Package</h2>
+        <p>Hardware + configuration. NVIDIA Jetson Orin Nano 8GB. Delivered in 5–8 business days.</p>
       </div>
 
-      <hr class="divider" />
+      <div class="pkg-grid">
 
-      <!-- STEP 2: PAYMENT MODE -->
-      <div class="step-label">Step 2 — Payment option</div>
-      <div class="payment-modes">
-        <div class="mode-card selected" data-mode="full" onclick="selectMode('full')">
-          <div class="mode-title">Pay in Full</div>
-          <div class="mode-detail" id="full-detail">One payment, done.</div>
+        <div class="pkg-card" id="pkg-basic" onclick="selectPackage('basic')">
+          <div class="pkg-card-top">
+            <div class="radio"></div>
+            <div class="pkg-card-info">
+              <h3>Basic Setup</h3>
+              <div class="pkg-price">$1,299 <span>one-time</span></div>
+              <div class="pkg-tag">1 agent · security hardening · base integrations</div>
+            </div>
+          </div>
+          <ul class="pkg-features">
+            <li>Jetson Orin Nano 8GB — configured & optimized</li>
+            <li>OpenClaw install + security hardening</li>
+            <li>1 custom agent — identity files authored</li>
+            <li>3 custom skills built & deployed</li>
+            <li>2-tier LLM routing</li>
+            <li>AgentMail inbox · web search · base connectors</li>
+            <li>1-hour onboarding session</li>
+          </ul>
         </div>
-        <div class="mode-card" data-mode="deposit" onclick="selectMode('deposit')">
-          <div class="mode-title">Start for $500</div>
-          <div class="mode-detail highlight" id="deposit-detail">$500 today, rest in monthly installments.</div>
+
+        <div class="pkg-card" id="pkg-advanced" onclick="selectPackage('advanced')">
+          <div class="popular-tag">Most Popular</div>
+          <div class="pkg-card-top">
+            <div class="radio"></div>
+            <div class="pkg-card-info">
+              <h3>Advanced Setup</h3>
+              <div class="pkg-price">$1,899 <span>one-time</span></div>
+              <div class="pkg-tag">3 agents · LLM routing · AgentMail · backup · fine-tuning</div>
+            </div>
+          </div>
+          <ul class="pkg-features">
+            <li>Everything in Basic</li>
+            <li>3 executive agents — fully configured</li>
+            <li>4-tier cost-optimized LLM routing</li>
+            <li>AgentMail — full send/receive inboxes</li>
+            <li>LinkedIn API + webhook routing</li>
+            <li>Remote backup repository included</li>
+            <li>1 month fine-tuning included</li>
+            <li>2-hour onboarding + 60-day support window</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <hr class="divider" />
+
+      <!-- STEP 2: SUPPORT -->
+      <div class="section-head">
+        <h2>2 — Add Monthly Support</h2>
+        <p>Ongoing maintenance, prompt tuning, remote backup management, and priority response. Cancel anytime.</p>
+      </div>
+
+      <div class="addons-grid" style="grid-template-columns: 1fr 1fr;">
+        <div class="addon-card" id="addon-support-basic" onclick="toggleAddon('support-basic', 350, 'Basic Support', true)">
+          <div class="checkbox"></div>
+          <div class="addon-info">
+            <h4>Basic Support</h4>
+            <p>Monthly health check, prompt refresh, up to 2 skill changes, remote backup repo, priority response.</p>
+            <div class="addon-price">$350 <span class="addon-recur">/ month</span></div>
+          </div>
+        </div>
+        <div class="addon-card" id="addon-support-advanced" onclick="toggleAddon('support-advanced', 500, 'Advanced Support', true)">
+          <div class="checkbox"></div>
+          <div class="addon-info">
+            <h4>Advanced Support</h4>
+            <p>Everything in Basic + monthly strategy sync, fine-tuning cycles, agent performance review, repo management.</p>
+            <div class="addon-price">$500 <span class="addon-recur">/ month</span></div>
+          </div>
         </div>
       </div>
 
       <hr class="divider" />
 
-      <!-- STEP 3: PRESELECTED (Support + Hosting) -->
-      <div class="step-label">Step 3 — Included services (preselected — deselect to remove)</div>
-      <div class="addons-grid" id="preselectedAddons">
-        <div class="empty-summary">Select a package first</div>
+      <!-- STEP 3: HOSTING -->
+      <div class="section-head">
+        <h2>3 — Cloud Hosting</h2>
+        <p>Optional managed cloud relay for remote access. No hardware to manage on your end.</p>
+      </div>
+
+      <div class="addons-grid" style="grid-template-columns: 1fr;">
+        <div class="addon-card" id="addon-hosting" onclick="toggleAddon('hosting', 49, 'Cloud Hosting', true)">
+          <div class="checkbox"></div>
+          <div class="addon-info">
+            <h4>Managed Cloud Hosting</h4>
+            <p>Dedicated cloud server, monitoring, automated snapshots, remote access management. 99.9% uptime. Cancel anytime.</p>
+            <div class="addon-price">$49 <span class="addon-recur">/ month</span></div>
+          </div>
+        </div>
       </div>
 
       <hr class="divider" />
 
-      <!-- STEP 4: OPTIONAL ADD-ONS -->
-      <div class="step-label">Step 4 — Optional add-ons</div>
-      <div class="addons-grid" id="optionalAddons">
-        <div class="empty-summary">Select a package first</div>
+      <!-- STEP 4: ADD-ONS -->
+      <div class="section-head">
+        <h2>4 — Optional Add-Ons</h2>
+        <p>One-time additions to your setup. Built and deployed by our team.</p>
       </div>
 
-      <hr class="divider" />
-
-      <!-- STANDALONE -->
-      <div class="step-label">Standalone services — no package required</div>
-      <div class="standalone-grid" id="standaloneLinks">
-        <div class="empty-summary">Loading…</div>
+      <div class="addons-grid">
+        <div class="addon-card" id="addon-agent" onclick="toggleAddon('agent', 49, 'Additional Agent', false)">
+          <div class="checkbox"></div>
+          <div class="addon-info">
+            <h4>Additional Agent</h4>
+            <p>Custom sub-agent for a specific business role — BD, ops, client comms, research.</p>
+            <div class="addon-price">$49 <span class="addon-recur">one-time</span></div>
+          </div>
+        </div>
+        <div class="addon-card" id="addon-search" onclick="toggleAddon('search', 350, 'Search Pipeline', false)">
+          <div class="checkbox"></div>
+          <div class="addon-info">
+            <h4>Search Pipeline</h4>
+            <p>Web research, knowledge base, or domain-specific data pipeline wired into your agents.</p>
+            <div class="addon-price">$350 <span class="addon-recur">one-time</span></div>
+          </div>
+        </div>
+        <div class="addon-card" id="addon-maintenance" onclick="toggleAddon('maintenance', 350, 'Maintenance Pack', false)">
+          <div class="checkbox"></div>
+          <div class="addon-info">
+            <h4>Maintenance Pack</h4>
+            <p>One-time deep audit: full system review, prompt refresh, connector health check, skill optimization.</p>
+            <div class="addon-price">$350 <span class="addon-recur">one-time</span></div>
+          </div>
+        </div>
       </div>
 
     </div>
 
-    <!-- SUMMARY -->
-    <div class="right-col">
+    <!-- RIGHT — ORDER SUMMARY -->
+    <div>
       <div class="summary-box">
         <div class="summary-title">Order Summary</div>
+
         <div id="summary-lines">
-          <div class="empty-summary">Select a package to begin</div>
+          <div class="summary-empty">Select a package to get started.</div>
         </div>
-        <div id="summary-total" style="display:none">
-          <div class="summary-total">
-            <span class="lbl">Due today</span>
-            <span class="val" id="total-display">$0</span>
+
+        <div class="summary-total" id="summary-total" style="display:none;">
+          <div>
+            <div>Total Today</div>
+            <div class="t-note" id="summary-recur-note"></div>
           </div>
-          <div class="summary-note" id="recurring-note"></div>
+          <div id="summary-total-val"></div>
         </div>
-        <button class="checkout-btn" id="checkoutBtn" disabled onclick="goToCheckout()">
-          Continue to Checkout →
+
+        <button class="btn-checkout" id="checkout-btn" disabled onclick="goCheckout()">
+          Proceed to Checkout →
         </button>
-        <div class="err" id="err-msg"></div>
+        <div class="checkout-note">Secure checkout via Stripe. No account required.</div>
+        <div class="stripe-badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#8b91a0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Powered by Stripe · 256-bit SSL
+        </div>
       </div>
     </div>
+
   </div>
+
+  <hr class="divider" />
+
+  <!-- STANDALONE ITEMS -->
+  <div class="section-head">
+    <h2>Consulting & Standalone Services</h2>
+    <p>No setup package required. Book directly.</p>
+  </div>
+  <div class="standalone-grid">
+    <div class="standalone-card">
+      <h4>Consulting — 2 Hours</h4>
+      <p>Strategy session: architecture review, workflow design, custom integration planning, AI roadmap.</p>
+      <div class="s-price">$250</div>
+      <a href="https://buy.stripe.com/test_4gM9AS87SdOc3ah7ypgjC0o" class="btn-standalone" target="_blank">Book Now →</a>
+    </div>
+    <div class="standalone-card">
+      <h4>Consulting — 5 Hours</h4>
+      <p>Extended advisory block. Multi-agent strategy, complex builds, ongoing architecture work.</p>
+      <div class="s-price">$625</div>
+      <a href="https://buy.stripe.com/test_14AcN43RC6lK4el2e5gjC0p" class="btn-standalone" target="_blank">Book Now →</a>
+    </div>
+    <div class="standalone-card">
+      <h4>Maintenance Pack</h4>
+      <p>One-time deep system audit, LLM prompt refresh, connector health check, performance optimization.</p>
+      <div class="s-price">$350</div>
+      <a href="https://buy.stripe.com/test_eVqeVc0Fq4dC7qx4mdgjC0n" class="btn-standalone" target="_blank">Book Now →</a>
+    </div>
+  </div>
+
 </div>
 
+<footer>
+  <p>© 2026 Protime Consulting Inc. · <a href="index.html">Back to Packages</a> · <a href="mailto:info@protimeconsulting.com">Contact</a></p>
+</footer>
+
 <script>
-  let catalog = null;
+  // ── State ─────────────────────────────────────────────────────────────────
   let selectedPackage = null;
-  let selectedMode = 'full';
-  let includeSupport = true;
-  let includeHosting = true;
-  let selectedAddons = new Set();
+  const selectedAddons = {};
 
-  const API = 'https://screenai.tailff380a.ts.net/checkout';
+  // ── Stripe Payment Links ──────────────────────────────────────────────────
+  const LINKS = {
+    // Packages (solo)
+    'basic':    'https://buy.stripe.com/test_6oUdR873O11q5ip5qhgjC0j',
+    'advanced': 'https://buy.stripe.com/test_3cI9AS87S6lK5ipaKBgjC0k',
 
-  async function loadCatalog() {
-    try {
-      const res = await fetch(`${API}/catalog`);
-      catalog = await res.json();
-      renderPackages();
-      renderPreselected();
-      renderOptional();
-      renderStandalone();
-    } catch(e) {
-      document.getElementById('packages').innerHTML = '<div style="color:#f87171">Failed to load catalog. Refresh to try again.</div>';
-    }
-  }
+    // Bundles: package + support
+    'basic+support-basic':             'https://buy.stripe.com/test_5kQ00idsc4dC8uB6ulgjC0t',
+    'basic+support-basic+hosting':     'https://buy.stripe.com/test_bJe5kC5ZKcK826df0RgjC0w',
+    'advanced+support-advanced':       'https://buy.stripe.com/test_fZuaEW0Fq6lK9yF5qhgjC0u',
+    'advanced+support-advanced+hosting': 'https://buy.stripe.com/test_eVq14m87SbG4129dWNgjC0v',
 
-  function renderPackages() {
-    const el = document.getElementById('packages');
-    el.innerHTML = catalog.packages.map((pkg, i) => `
-      <div class="pkg-card" data-id="${pkg.id}" onclick="selectPackage('${pkg.id}')">
-        ${i === 1 ? '<div class="badge">Most Popular</div>' : ''}
-        <div class="pkg-name">${pkg.name}</div>
-        <div class="pkg-tagline">${pkg.tagline}</div>
-        <div class="pkg-desc">${pkg.description}</div>
-        <div class="pkg-price">$${pkg.price_full.toLocaleString()} <span>full</span></div>
-        <div class="pkg-disclaimer">☁ ${pkg.disclaimer}</div>
-        <div class="select-indicator">
-          <div class="check"></div>
-          <span>Select this package</span>
-        </div>
-      </div>
-    `).join('');
-  }
+    // Individual support / hosting / addons
+    'support-basic':    'https://buy.stripe.com/test_7sY28q0Fq6lK26d8CtgjC0q',
+    'support-advanced': 'https://buy.stripe.com/test_8x26oGbk4bG4h177ypgjC0r',
+    'hosting':          'https://buy.stripe.com/test_8x214m5ZK4dC3ah9GxgjC0s',
+    'agent':            'https://buy.stripe.com/test_9B65kCco8eSgdOVaKBgjC0l',
+    'search':           'https://buy.stripe.com/test_14AcN4fAkcK826d3i9gjC0m',
+    'maintenance':      'https://buy.stripe.com/test_eVqeVc0Fq4dC7qx4mdgjC0n',
+  };
 
-  function renderPreselected() {
-    const el = document.getElementById('preselectedAddons');
-    if (!selectedPackage || !catalog) {
-      el.innerHTML = '<div class="empty-summary">Select a package first</div>';
-      return;
-    }
-    const pkg = catalog.packages.find(p => p.id === selectedPackage);
+  const PRICES = {
+    'basic': 1299, 'advanced': 1899,
+    'support-basic': 350, 'support-advanced': 500,
+    'hosting': 49, 'agent': 49, 'search': 350, 'maintenance': 350,
+  };
 
-    // Support card (dynamic per package)
-    const supportHtml = `
-      <div class="addon-card preselected-card ${includeSupport ? 'selected' : ''}" onclick="toggleSupport()">
-        <div class="addon-check"><span class="addon-check-inner">✓</span></div>
-        <div class="addon-info">
-          <div class="addon-pre-tag">Preselected</div>
-          <div class="addon-name">${pkg.support_name}</div>
-          <div class="addon-desc">Prompt tuning, connector health, agent updates. Priority support. Cancel anytime.</div>
-          <div class="addon-price">$${pkg.support_amount}/mo recurring</div>
-        </div>
-      </div>
-    `;
+  const LABELS = {
+    'basic': 'Basic Setup', 'advanced': 'Advanced Setup',
+    'support-basic': 'Basic Support', 'support-advanced': 'Advanced Support',
+    'hosting': 'Cloud Hosting', 'agent': 'Additional Agent',
+    'search': 'Search Pipeline', 'maintenance': 'Maintenance Pack',
+  };
 
-    // Cloud hosting card
-    const hostingAddon = catalog.preselected_addons.find(a => a.id === 'cloud_hosting');
-    const hostingHtml = hostingAddon ? `
-      <div class="addon-card preselected-card ${includeHosting ? 'selected' : ''}" onclick="toggleHosting()">
-        <div class="addon-check"><span class="addon-check-inner">✓</span></div>
-        <div class="addon-info">
-          <div class="addon-pre-tag">Preselected</div>
-          <div class="addon-name">${hostingAddon.name}</div>
-          <div class="addon-desc">${hostingAddon.description}</div>
-          <div class="addon-price">$${hostingAddon.amount}/mo recurring</div>
-        </div>
-      </div>
-    ` : '';
+  const RECURRING = ['support-basic', 'support-advanced', 'hosting'];
 
-    el.innerHTML = supportHtml + hostingHtml;
-  }
-
-  function renderOptional() {
-    const el = document.getElementById('optionalAddons');
-    if (!selectedPackage || !catalog) {
-      el.innerHTML = '<div class="empty-summary">Select a package first</div>';
-      return;
-    }
-    el.innerHTML = catalog.optional_addons.map(a => `
-      <div class="addon-card ${selectedAddons.has(a.id) ? 'selected' : ''}" onclick="toggleAddon('${a.id}')">
-        <div class="addon-check"><span class="addon-check-inner">✓</span></div>
-        <div class="addon-info">
-          <div class="addon-name">${a.name}</div>
-          <div class="addon-desc">${a.description}</div>
-          <div class="addon-price">$${a.amount}${a.recurring ? '/mo' : ' one-time'}</div>
-        </div>
-      </div>
-    `).join('');
-  }
-
-  function renderStandalone() {
-    const el = document.getElementById('standaloneLinks');
-    if (!catalog || !catalog.standalone) { el.innerHTML = ''; return; }
-    el.innerHTML = catalog.standalone.map(s => `
-      <div class="standalone-card">
-        <div class="standalone-name">${s.name}</div>
-        <div class="standalone-desc">${s.description}</div>
-        <div class="standalone-price">$${s.amount.toLocaleString()}</div>
-        <a class="standalone-btn" href="${s.link}" target="_blank">Buy Now →</a>
-      </div>
-    `).join('');
-  }
-
+  // ── Package Selection ─────────────────────────────────────────────────────
   function selectPackage(id) {
     selectedPackage = id;
-    includeSupport = true;
-    includeHosting = true;
-    selectedAddons.clear();
-
     document.querySelectorAll('.pkg-card').forEach(c => c.classList.remove('selected'));
-    document.querySelector(`.pkg-card[data-id="${id}"]`).classList.add('selected');
+    document.getElementById('pkg-' + id).classList.add('selected');
 
-    const pkg = catalog.packages.find(p => p.id === id);
-    document.getElementById('full-detail').textContent = `$${pkg.price_full.toLocaleString()} — one payment.`;
-    document.getElementById('deposit-detail').textContent = `${pkg.installment_label}`;
-
-    renderPreselected();
-    renderOptional();
+    // Auto-suggest matching support if none selected
+    const hasSupportSelected = selectedAddons['support-basic'] || selectedAddons['support-advanced'];
+    if (!hasSupportSelected) {
+      const suggestId = id === 'basic' ? 'support-basic' : 'support-advanced';
+      // Just highlight — don't auto-check
+    }
     updateSummary();
   }
 
-  function selectMode(mode) {
-    selectedMode = mode;
-    document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
-    document.querySelector(`.mode-card[data-mode="${mode}"]`).classList.add('selected');
+  // ── Addon Toggle ──────────────────────────────────────────────────────────
+  function toggleAddon(id, price, label, isRecurring) {
+    // Support exclusivity — only one support tier at a time
+    if (id === 'support-basic' && selectedAddons['support-advanced']) {
+      delete selectedAddons['support-advanced'];
+      document.getElementById('addon-support-advanced').classList.remove('selected');
+    }
+    if (id === 'support-advanced' && selectedAddons['support-basic']) {
+      delete selectedAddons['support-basic'];
+      document.getElementById('addon-support-basic').classList.remove('selected');
+    }
+
+    const el = document.getElementById('addon-' + id);
+    if (selectedAddons[id]) {
+      delete selectedAddons[id];
+      el.classList.remove('selected');
+    } else {
+      selectedAddons[id] = { price, label, recurring: isRecurring };
+      el.classList.add('selected');
+    }
     updateSummary();
   }
 
-  function toggleSupport() {
-    includeSupport = !includeSupport;
-    renderPreselected();
-    updateSummary();
-  }
-
-  function toggleHosting() {
-    includeHosting = !includeHosting;
-    renderPreselected();
-    updateSummary();
-  }
-
-  function toggleAddon(id) {
-    if (selectedAddons.has(id)) selectedAddons.delete(id);
-    else selectedAddons.add(id);
-    renderOptional();
-    updateSummary();
-  }
-
+  // ── Summary Render ────────────────────────────────────────────────────────
   function updateSummary() {
     const linesEl = document.getElementById('summary-lines');
     const totalEl = document.getElementById('summary-total');
-    const btn = document.getElementById('checkoutBtn');
+    const totalValEl = document.getElementById('summary-total-val');
+    const recurNoteEl = document.getElementById('summary-recur-note');
+    const btn = document.getElementById('checkout-btn');
 
-    if (!selectedPackage) {
-      linesEl.innerHTML = '<div class="empty-summary">Select a package to begin</div>';
+    if (!selectedPackage && Object.keys(selectedAddons).length === 0) {
+      linesEl.innerHTML = '<div class="summary-empty">Select a package to get started.</div>';
       totalEl.style.display = 'none';
       btn.disabled = true;
       return;
     }
 
-    const pkg = catalog.packages.find(p => p.id === selectedPackage);
     let lines = [];
     let todayTotal = 0;
-    let recurringLines = [];
+    let recurringTotal = 0;
 
-    if (selectedMode === 'full') {
-      lines.push({ label: pkg.name, val: `$${pkg.price_full.toLocaleString()}` });
-      todayTotal += pkg.price_full;
-    } else {
-      lines.push({ label: `${pkg.name} — Deposit`, val: '$500' });
-      todayTotal += 500;
-      recurringLines.push(pkg.installment_label);
+    if (selectedPackage) {
+      const p = PRICES[selectedPackage];
+      todayTotal += p;
+      lines.push({ label: LABELS[selectedPackage], val: '$' + p.toLocaleString(), recurring: false });
     }
 
-    if (includeSupport) {
-      lines.push({ label: `${pkg.support_name}`, val: `$${pkg.support_amount}/mo` });
-      recurringLines.push(`$${pkg.support_amount}/mo support`);
-    }
-
-    if (includeHosting) {
-      lines.push({ label: 'Managed Cloud Hosting', val: '$49/mo' });
-      recurringLines.push('$49/mo hosting');
-    }
-
-    for (const id of selectedAddons) {
-      const addon = catalog.optional_addons.find(a => a.id === id);
-      if (!addon) continue;
-      if (addon.recurring) {
-        lines.push({ label: addon.name, val: `$${addon.amount}/mo` });
-        recurringLines.push(`$${addon.amount}/mo`);
+    for (const [id, item] of Object.entries(selectedAddons)) {
+      if (item.recurring) {
+        recurringTotal += item.price;
+        lines.push({ label: item.label, val: '$' + item.price + '/mo', recurring: true });
       } else {
-        lines.push({ label: addon.name, val: `$${addon.amount}` });
-        todayTotal += addon.amount;
+        todayTotal += item.price;
+        lines.push({ label: item.label, val: '$' + item.price, recurring: false });
       }
     }
 
     linesEl.innerHTML = lines.map(l =>
-      `<div class="summary-line"><span class="lbl">${l.label}</span><span class="val">${l.val}</span></div>`
+      `<div class="summary-line">
+        <span class="s-label">${l.label}</span>
+        <span class="s-val${l.recurring ? ' green' : ''}">${l.val}</span>
+      </div>`
     ).join('');
 
-    document.getElementById('total-display').textContent = `$${todayTotal.toLocaleString()}`;
+    totalEl.style.display = 'flex';
+    totalValEl.textContent = '$' + todayTotal.toLocaleString();
+    recurNoteEl.textContent = recurringTotal > 0
+      ? `+ $${recurringTotal}/mo recurring after`
+      : '';
 
-    const noteEl = document.getElementById('recurring-note');
-    if (recurringLines.length > 0) {
-      noteEl.innerHTML = `<strong style="color:var(--accent-light)">Recurring:</strong> ${recurringLines.join(' · ')}. Cancel anytime.`;
-    } else {
-      noteEl.textContent = 'One-time charge. No subscription.';
-    }
-
-    totalEl.style.display = 'block';
-    btn.disabled = false;
+    btn.disabled = !selectedPackage;
   }
 
-  async function goToCheckout() {
-    const btn = document.getElementById('checkoutBtn');
-    const errEl = document.getElementById('err-msg');
-    btn.disabled = true;
-    btn.textContent = 'Preparing checkout…';
-    errEl.textContent = '';
+  // ── Checkout Routing ──────────────────────────────────────────────────────
+  function goCheckout() {
+    if (!selectedPackage) return;
 
-    try {
-      const res = await fetch(`${API}/create-checkout`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          package_id: selectedPackage,
-          payment_mode: selectedMode,
-          include_support: includeSupport,
-          include_hosting: includeHosting,
-          addons: [...selectedAddons],
-        })
-      });
-      const data = await res.json();
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        throw new Error(data.error || 'Unknown error');
+    const addons = Object.keys(selectedAddons);
+    const hasSupport = addons.includes('support-basic') || addons.includes('support-advanced');
+    const hasHosting = addons.includes('hosting');
+    const supportId = addons.includes('support-basic') ? 'support-basic' : 'support-advanced';
+
+    // Try to find a pre-built bundle link first
+    let key = selectedPackage;
+    if (hasSupport) key += '+' + supportId;
+    if (hasHosting && hasSupport) key += '+hosting';
+
+    let url = LINKS[key];
+
+    // If no exact bundle match, fall back to package-only link
+    // (addons that don't have a bundle get their own separate checkout)
+    if (!url) url = LINKS[selectedPackage];
+
+    // Handle single add-ons with no package bundle — open in sequence
+    // For now, route to the best matching link and note remaining
+    const addonOnlyItems = addons.filter(a => !['support-basic','support-advanced','hosting'].includes(a));
+    // Addon-only items (agent, search, maintenance) are individual links shown below summary
+    // if selected alongside a package — open package checkout first, addons shown as follow-up
+    if (addonOnlyItems.length > 0 && !url.includes('bundle')) {
+      // Will open package link, addons handled by showing reminder
+    }
+
+    window.open(url, '_blank');
+
+    // If they selected add-ons that aren't in the bundle, open them too
+    for (const addonId of addonOnlyItems) {
+      if (LINKS[addonId]) {
+        setTimeout(() => window.open(LINKS[addonId], '_blank'), 600);
       }
-    } catch (e) {
-      errEl.textContent = 'Something went wrong: ' + e.message;
-      btn.disabled = false;
-      btn.textContent = 'Continue to Checkout →';
     }
   }
-
-  loadCatalog();
 </script>
+
 </body>
 </html>
