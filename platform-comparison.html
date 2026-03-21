@@ -3,528 +3,203 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OpenClaw Platform Comparison — Protime Consulting</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>Platform Comparison — AI Infrastructure Guide | Protime Consulting</title>
+<meta name="description" content="Jetson Orin Nano vs Mac Mini M4 vs DigitalOcean — cost breakdown, LLM routing, and cost justification for your AI agent platform." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
-    --bg: #0c0d0f;
-    --bg2: #13151a;
-    --bg3: #1a1d24;
-    --border: rgba(255,255,255,0.07);
-    --border-accent: rgba(255,255,255,0.14);
-    --text: #e8e6e0;
-    --text2: #9a9890;
-    --text3: #5c5b57;
-    --green: #2dd4a0;
-    --green-dim: rgba(45,212,160,0.12);
-    --amber: #f5a623;
-    --amber-dim: rgba(245,166,35,0.12);
-    --blue: #5b9cf6;
-    --blue-dim: rgba(91,156,246,0.12);
-    --red: #f06060;
-    --red-dim: rgba(240,96,96,0.12);
+    --black: #0a0a0a;
+    --dark: #111318;
+    --card: #16191f;
+    --card-alt: #13161c;
+    --border: #23272f;
+    --accent: #2563eb;
+    --accent-light: #3b82f6;
+    --text: #e8eaf0;
+    --muted: #8b91a0;
+    --white: #ffffff;
+    --green: #22c55e;
+    --amber: #f59e0b;
+    --red: #ef4444;
+    --blue: #3b82f6;
+    /* semantic value colors */
+    --val-good: #22c55e;
+    --val-warn: #f59e0b;
+    --val-bad:  #ef4444;
   }
-
   html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; background: var(--black); color: var(--text); line-height: 1.6; font-size: 15px; }
+  a { color: inherit; text-decoration: none; }
 
-  body {
-    font-family: 'Epilogue', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    font-size: 15px;
-    line-height: 1.65;
-  }
-
-  /* HEADER */
-  .site-header {
-    border-bottom: 1px solid var(--border);
-    padding: 0 2.5rem;
-    height: 56px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    background: rgba(12,13,15,0.92);
-    backdrop-filter: blur(12px);
-    z-index: 100;
-  }
-  .logo {
-    font-family: 'DM Mono', monospace;
-    font-size: 13px;
-    font-weight: 500;
-    letter-spacing: .06em;
-    color: var(--text);
-    text-decoration: none;
-  }
-  .logo span { color: var(--green); }
-  .nav-cta {
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: .04em;
-    color: var(--green);
-    border: 1px solid var(--green);
-    padding: 6px 16px;
-    border-radius: 4px;
-    text-decoration: none;
-    transition: background .15s;
-  }
-  .nav-cta:hover { background: var(--green-dim); }
+  /* NAV */
+  nav { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 2rem; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: rgba(10,10,10,0.95); backdrop-filter: blur(8px); z-index: 100; }
+  .nav-logo { font-weight: 700; font-size: 1rem; letter-spacing: -0.01em; }
+  .nav-logo span { color: var(--accent-light); }
+  .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+  .nav-links a { font-size: 0.875rem; color: var(--muted); transition: color 0.2s; }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta { background: var(--accent); color: var(--white) !important; padding: 0.5rem 1.25rem; border-radius: 6px; font-size: 0.875rem; font-weight: 600; transition: background 0.2s; }
+  .nav-cta:hover { background: var(--accent-light) !important; }
+  @media (max-width: 640px) { .nav-links { display: none; } }
 
   /* HERO */
-  .hero {
-    padding: 5rem 2.5rem 3.5rem;
-    max-width: 860px;
-    margin: 0 auto;
-  }
-  .hero-eyebrow {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    font-weight: 400;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    color: var(--green);
-    margin-bottom: 1.25rem;
-  }
-  .hero h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(2rem, 5vw, 3.25rem);
-    line-height: 1.15;
-    color: var(--text);
-    font-weight: 400;
-    margin-bottom: 1.25rem;
-  }
-  .hero h1 em {
-    font-style: italic;
-    color: var(--text2);
-  }
-  .hero p {
-    font-size: 16px;
-    color: var(--text2);
-    max-width: 600px;
-    line-height: 1.75;
-  }
+  .hero { max-width: 860px; margin: 0 auto; padding: 4.5rem 2rem 3rem; }
+  .hero-badge { display: inline-block; background: rgba(37,99,235,0.12); color: var(--accent-light); border: 1px solid rgba(59,130,246,0.25); border-radius: 100px; font-size: 0.75rem; font-weight: 600; padding: 0.3rem 0.9rem; margin-bottom: 1.5rem; letter-spacing: 0.05em; text-transform: uppercase; }
+  .hero h1 { font-size: clamp(1.875rem, 4vw, 2.75rem); font-weight: 800; letter-spacing: -0.03em; color: var(--white); margin-bottom: 1rem; line-height: 1.1; }
+  .hero h1 em { font-style: normal; color: var(--accent-light); }
+  .hero p { font-size: 1.05rem; color: var(--muted); max-width: 600px; }
+
+  /* LAYOUT */
+  .content { max-width: 860px; margin: 0 auto; padding: 0 2rem 5rem; }
+  .s-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
 
   /* FILTER BAR */
-  .filter-section {
-    padding: 0 2.5rem;
-    max-width: 860px;
-    margin: 0 auto 2.5rem;
-  }
-  .filter-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: var(--text3);
-    margin-bottom: .75rem;
-  }
-  .filter-row {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-  .f-btn {
-    font-family: 'Epilogue', sans-serif;
-    font-size: 12px;
-    font-weight: 500;
-    padding: 7px 16px;
-    border-radius: 3px;
-    border: 1px solid var(--border-accent);
-    background: transparent;
-    color: var(--text2);
-    cursor: pointer;
-    transition: all .15s;
-  }
-  .f-btn:hover { border-color: var(--green); color: var(--green); }
-  .f-btn.active { border-color: var(--green); color: var(--green); background: var(--green-dim); }
+  .filter-section { max-width: 860px; margin: 0 auto 2rem; padding: 0 2rem; }
+  .filter-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .f-btn { font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 500; padding: 0.4rem 1rem; border-radius: 6px; border: 1px solid var(--border); background: transparent; color: var(--muted); cursor: pointer; transition: all 0.15s; }
+  .f-btn:hover { border-color: var(--accent-light); color: var(--text); }
+  .f-btn.active { border-color: var(--accent); color: var(--accent-light); background: rgba(37,99,235,0.08); }
 
-  /* MAIN LAYOUT */
-  .content {
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 0 2.5rem 5rem;
-  }
+  /* METRICS ROW */
+  .metrics-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 2rem; }
+  .metric-cell { background: var(--card); padding: 1.25rem 1.5rem; transition: background 0.15s; }
+  .metric-cell:hover { background: #1c2029; }
+  .metric-platform { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.4rem; }
+  .metric-amount { font-size: 1.75rem; font-weight: 800; color: var(--white); letter-spacing: -0.02em; line-height: 1; margin-bottom: 0.35rem; }
+  .metric-note { font-size: 0.75rem; color: var(--muted); }
+  @media (max-width: 600px) { .metrics-row { grid-template-columns: 1fr; } }
 
-  /* SECTION LABEL */
-  .s-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    color: var(--text3);
-    margin-bottom: 1rem;
-    padding-bottom: .5rem;
-    border-bottom: 1px solid var(--border);
-  }
+  /* CHART BLOCKS */
+  .chart-block { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; margin-bottom: 1rem; }
+  .chart-title { font-size: 0.825rem; font-weight: 600; color: var(--muted); margin-bottom: 1.25rem; }
+  .legend-row { display: flex; gap: 1.25rem; flex-wrap: wrap; margin-bottom: 1rem; }
+  .legend-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.75rem; color: var(--muted); }
+  .legend-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
 
-  /* SUMMARY METRICS */
-  .metrics-row {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0,1fr));
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    overflow: hidden;
-    margin-bottom: 2.5rem;
-  }
-  .metric-cell {
-    background: var(--bg2);
-    padding: 1.25rem 1.5rem;
-    transition: background .15s;
-  }
-  .metric-cell:hover { background: var(--bg3); }
-  .metric-platform {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    color: var(--text3);
-    margin-bottom: .5rem;
-  }
-  .metric-amount {
-    font-family: 'DM Mono', monospace;
-    font-size: 1.75rem;
-    font-weight: 500;
-    color: var(--text);
-    line-height: 1;
-    margin-bottom: .4rem;
-  }
-  .metric-note {
-    font-size: 11px;
-    color: var(--text3);
-  }
-
-  /* CHART AREA */
-  .chart-block {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 1.5rem;
-    margin-bottom: 1rem;
-  }
-  .chart-title {
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--text2);
-    margin-bottom: 1.25rem;
-  }
-  .legend-row {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    margin-bottom: 1rem;
-  }
-  .legend-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 11px;
-    font-family: 'DM Mono', monospace;
-    color: var(--text3);
-  }
-  .legend-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 2px;
-    flex-shrink: 0;
-  }
-  .note-strip {
-    background: var(--green-dim);
-    border-left: 2px solid var(--green);
-    border-radius: 0 4px 4px 0;
-    padding: 10px 14px;
-    font-size: 12px;
-    color: var(--text2);
-    line-height: 1.6;
-    margin-bottom: 2.5rem;
-  }
+  /* NOTE STRIP */
+  .note-strip { background: rgba(37,99,235,0.06); border-left: 2px solid var(--accent); border-radius: 0 6px 6px 0; padding: 0.85rem 1.1rem; font-size: 0.825rem; color: var(--muted); line-height: 1.6; margin-bottom: 2rem; }
 
   /* PLATFORM CARDS */
-  .platform-cards {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-bottom: 2.5rem;
-  }
-  .p-card {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    overflow: hidden;
-    transition: border-color .2s, opacity .2s;
-  }
-  .p-card.highlighted { border-color: var(--green); }
-  .p-card.dimmed { opacity: .35; }
-  .p-card-header {
-    padding: 1.25rem 1.5rem;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-  .p-card-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.15rem;
-    font-weight: 400;
-    color: var(--text);
-    margin-bottom: 4px;
-  }
-  .p-card-sub {
-    font-size: 12px;
-    color: var(--text3);
-    font-family: 'DM Mono', monospace;
-  }
-  .badge-row {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-    flex-shrink: 0;
-    align-items: flex-start;
-  }
-  .badge {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: .05em;
-    padding: 3px 9px;
-    border-radius: 3px;
-    font-weight: 500;
-    white-space: nowrap;
-  }
-  .badge-green { background: var(--green-dim); color: var(--green); border: 1px solid rgba(45,212,160,0.25); }
-  .badge-amber { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(245,166,35,0.25); }
-  .badge-blue  { background: var(--blue-dim);  color: var(--blue);  border: 1px solid rgba(91,156,246,0.25); }
-  .badge-red   { background: var(--red-dim);   color: var(--red);   border: 1px solid rgba(240,96,96,0.25); }
-  .p-card-rows {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0;
-  }
-  .data-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 9px 1.5rem;
-    border-bottom: 1px solid var(--border);
-    font-size: 13px;
-    gap: 12px;
-  }
+  .platform-cards { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 2.5rem; }
+  .p-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; transition: border-color 0.2s, opacity 0.2s; }
+  .p-card.highlighted { border-color: var(--accent); }
+  .p-card.dimmed { opacity: 0.3; }
+  .p-card-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+  .p-card-title { font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: 0.2rem; }
+  .p-card-sub { font-size: 0.775rem; color: var(--muted); }
+  .badge-row { display: flex; gap: 6px; flex-wrap: wrap; flex-shrink: 0; align-items: flex-start; }
+  .badge { font-size: 0.68rem; font-weight: 700; padding: 0.2rem 0.55rem; border-radius: 4px; white-space: nowrap; letter-spacing: 0.04em; text-transform: uppercase; }
+  .badge-green { background: rgba(34,197,94,0.1); color: var(--green); border: 1px solid rgba(34,197,94,0.25); }
+  .badge-amber { background: rgba(245,158,11,0.1); color: var(--amber); border: 1px solid rgba(245,158,11,0.25); }
+  .badge-blue  { background: rgba(59,130,246,0.1); color: var(--blue);  border: 1px solid rgba(59,130,246,0.25); }
+  .badge-red   { background: rgba(239,68,68,0.1);  color: var(--red);   border: 1px solid rgba(239,68,68,0.25); }
+  .p-card-rows { display: grid; grid-template-columns: 1fr 1fr; }
+  @media (max-width: 580px) { .p-card-rows { grid-template-columns: 1fr; } }
+  .data-row { display: flex; justify-content: space-between; align-items: center; padding: 0.55rem 1.5rem; border-bottom: 1px solid var(--border); font-size: 0.825rem; gap: 0.75rem; }
   .data-row:nth-child(even) { background: rgba(255,255,255,0.015); }
   .data-row:last-child { border-bottom: none; }
-  .p-card-rows .data-row:last-child { border-bottom: none; }
-  .dr-label { color: var(--text2); }
-  .dr-val { font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 400; text-align: right; color: var(--text); }
-  .dr-val.good { color: var(--green); }
-  .dr-val.warn { color: var(--amber); }
-  .dr-val.bad  { color: var(--red); }
+  .dr-label { color: var(--muted); }
+  .dr-val { font-size: 0.8rem; font-weight: 600; text-align: right; color: var(--text); }
+  .dr-val.good { color: var(--val-good); }
+  .dr-val.warn { color: var(--val-warn); }
+  .dr-val.bad  { color: var(--val-bad); }
 
-  /* RISK BLOCKS */
-  .risk-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 2.5rem;
-  }
-  .risk-cell {
-    background: var(--red-dim);
-    border: 1px solid rgba(240,96,96,0.2);
-    border-radius: 6px;
-    padding: 1rem 1.25rem;
-  }
-  .risk-title {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--red);
-    margin-bottom: 6px;
-  }
-  .risk-body {
-    font-size: 12px;
-    color: var(--text2);
-    line-height: 1.6;
-  }
+  /* RISK GRID */
+  .risk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 2.5rem; }
+  @media (max-width: 580px) { .risk-grid { grid-template-columns: 1fr; } }
+  .risk-cell { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.18); border-radius: 10px; padding: 1.1rem 1.25rem; }
+  .risk-title { font-size: 0.825rem; font-weight: 700; color: var(--red); margin-bottom: 0.4rem; }
+  .risk-body { font-size: 0.8rem; color: var(--muted); line-height: 1.6; }
 
-  /* SERVICES BLOCK */
-  .services-block {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    overflow: hidden;
-  }
-  .svc-header {
-    padding: 1.5rem;
-    border-bottom: 1px solid var(--border);
-  }
-  .svc-header h2 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.4rem;
-    font-weight: 400;
-    color: var(--text);
-    margin-bottom: 6px;
-  }
-  .svc-header p {
-    font-size: 13px;
-    color: var(--text2);
-    line-height: 1.65;
-    max-width: 560px;
-  }
-  .svc-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0,1fr));
-    gap: 0;
-  }
-  .svc-cell {
-    padding: 1.25rem 1.5rem;
-    border-right: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-  }
-  .svc-cell:nth-child(3n) { border-right: none; }
-  .svc-cell:nth-last-child(-n+3) { border-bottom: none; }
-  .svc-icon {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    color: var(--green);
-    margin-bottom: .5rem;
-  }
-  .svc-title {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text);
-    margin-bottom: 5px;
-  }
-  .svc-desc {
-    font-size: 12px;
-    color: var(--text2);
-    line-height: 1.6;
-  }
-  .svc-footer {
-    padding: 1.25rem 1.5rem;
-    border-top: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-  .svc-footer p {
-    font-size: 12px;
-    color: var(--text3);
-  }
-  .svc-cta {
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--bg);
-    background: var(--green);
-    padding: 9px 22px;
-    border-radius: 4px;
-    border: none;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-block;
-    transition: opacity .15s;
-    font-family: 'Epilogue', sans-serif;
-  }
-  .svc-cta:hover { opacity: .85; }
-
-  /* LLM ROUTING SECTION */
-  .routing-block {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    overflow: hidden;
-    margin-bottom: 2.5rem;
-  }
+  /* ROUTING BLOCK */
+  .routing-block { background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 2.5rem; }
   .routing-header { padding: 1.5rem; border-bottom: 1px solid var(--border); }
-  .routing-header h2 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; font-weight: 400; color: var(--text); margin-bottom: 6px; }
-  .routing-header p { font-size: 13px; color: var(--text2); line-height: 1.65; max-width: 620px; }
-  .model-compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-bottom: 1px solid var(--border); }
+  .routing-header h2 { font-size: 1.25rem; font-weight: 800; color: var(--white); letter-spacing: -0.02em; margin-bottom: 0.4rem; }
+  .routing-header p { font-size: 0.875rem; color: var(--muted); max-width: 600px; line-height: 1.6; }
+  .model-compare-grid { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--border); }
+  @media (max-width: 580px) { .model-compare-grid { grid-template-columns: 1fr; } }
   .model-col { padding: 1.25rem 1.5rem; }
   .model-col:first-child { border-right: 1px solid var(--border); }
-  .model-col-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; margin-bottom: .75rem; }
+  .model-col-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.6rem; }
   .model-col-label.local { color: var(--blue); }
   .model-col-label.cloud { color: var(--green); }
-  .model-name { font-size: 15px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
-  .model-meta { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text3); margin-bottom: 1rem; }
-  .model-stat-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
+  .model-name { font-size: 0.975rem; font-weight: 700; color: var(--white); margin-bottom: 0.2rem; }
+  .model-meta { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.85rem; }
+  .model-stat-row { display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px solid var(--border); font-size: 0.8rem; }
   .model-stat-row:last-child { border-bottom: none; }
-  .msr-label { color: var(--text2); }
-  .msr-val { font-family: 'DM Mono', monospace; font-weight: 500; color: var(--text); }
-  .msr-val.good { color: var(--green); }
-  .msr-val.warn { color: var(--amber); }
-  .msr-val.bad  { color: var(--red); }
+  .msr-label { color: var(--muted); }
+  .msr-val { font-weight: 600; color: var(--text); }
+  .msr-val.good { color: var(--val-good); }
+  .msr-val.warn { color: var(--val-warn); }
+  .msr-val.bad  { color: var(--val-bad); }
   .routing-table-wrap { overflow-x: auto; }
-  .routing-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  .routing-table th { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--text3); text-align: left; padding: 10px 1.5rem; border-bottom: 1px solid var(--border); white-space: nowrap; }
-  .routing-table td { padding: 9px 1.5rem; border-bottom: 1px solid var(--border); vertical-align: middle; color: var(--text2); }
+  .routing-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+  .routing-table th { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-align: left; padding: 0.6rem 1.5rem; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  .routing-table td { padding: 0.55rem 1.5rem; border-bottom: 1px solid var(--border); vertical-align: middle; color: var(--muted); }
   .routing-table tr:last-child td { border-bottom: none; }
   .routing-table tr:hover td { background: rgba(255,255,255,0.02); }
-  .rt-task { color: var(--text); font-weight: 500; }
-  .rt-model { font-family: 'DM Mono', monospace; font-size: 11px; padding: 2px 8px; border-radius: 3px; white-space: nowrap; display: inline-block; }
-  .rt-local  { background: var(--blue-dim); color: var(--blue); border: 1px solid rgba(91,156,246,0.2); }
-  .rt-cloud  { background: var(--green-dim); color: var(--green); border: 1px solid rgba(45,212,160,0.2); }
-  .rt-either { background: rgba(245,166,35,0.1); color: var(--amber); border: 1px solid rgba(245,166,35,0.2); }
-  .routing-insight { background: rgba(45,212,160,0.06); border-top: 1px solid var(--border); padding: 1.25rem 1.5rem; display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 1rem; }
+  .rt-task { color: var(--text); font-weight: 600; }
+  .rt-model { font-size: 0.72rem; font-weight: 700; padding: 0.15rem 0.55rem; border-radius: 4px; white-space: nowrap; display: inline-block; letter-spacing: 0.03em; }
+  .rt-local  { background: rgba(59,130,246,0.1);  color: var(--blue);  border: 1px solid rgba(59,130,246,0.2); }
+  .rt-cloud  { background: rgba(34,197,94,0.1);   color: var(--green); border: 1px solid rgba(34,197,94,0.2); }
+  .rt-either { background: rgba(245,158,11,0.1);  color: var(--amber); border: 1px solid rgba(245,158,11,0.2); }
+  .routing-insight { background: rgba(37,99,235,0.05); border-top: 1px solid var(--border); padding: 1.25rem 1.5rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
   .ri-stat { text-align: center; }
-  .ri-num { font-family: 'DM Mono', monospace; font-size: 1.5rem; font-weight: 500; color: var(--green); display: block; line-height: 1; margin-bottom: 4px; }
-  .ri-label { font-size: 11px; color: var(--text3); }
+  .ri-num { font-size: 1.75rem; font-weight: 800; color: var(--accent-light); display: block; letter-spacing: -0.02em; line-height: 1; margin-bottom: 0.25rem; }
+  .ri-label { font-size: 0.75rem; color: var(--muted); }
+  @media (max-width: 580px) { .routing-insight { grid-template-columns: 1fr; } }
 
-  /* ANIMATIONS */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  .hero, .filter-section, .content > * {
-    animation: fadeUp .5s ease both;
-  }
-  .content > *:nth-child(1) { animation-delay: .05s; }
-  .content > *:nth-child(2) { animation-delay: .1s; }
-  .content > *:nth-child(3) { animation-delay: .15s; }
-  .content > *:nth-child(4) { animation-delay: .2s; }
-  .content > *:nth-child(5) { animation-delay: .25s; }
+  /* SERVICES BLOCK */
+  .services-block { background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .svc-header { padding: 1.5rem; border-bottom: 1px solid var(--border); }
+  .svc-header h2 { font-size: 1.25rem; font-weight: 800; color: var(--white); letter-spacing: -0.02em; margin-bottom: 0.4rem; }
+  .svc-header p { font-size: 0.875rem; color: var(--muted); max-width: 560px; line-height: 1.6; }
+  .svc-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 640px) { .svc-grid { grid-template-columns: 1fr; } }
+  .svc-cell { padding: 1.25rem 1.5rem; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .svc-cell:nth-child(3n) { border-right: none; }
+  .svc-cell:nth-last-child(-n+3) { border-bottom: none; }
+  @media (max-width: 640px) { .svc-cell { border-right: none; } .svc-cell:last-child { border-bottom: none; } }
+  .svc-icon { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-light); margin-bottom: 0.4rem; }
+  .svc-title { font-size: 0.875rem; font-weight: 700; color: var(--white); margin-bottom: 0.35rem; }
+  .svc-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.6; }
+  .svc-footer { padding: 1.25rem 1.5rem; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+  .svc-footer p { font-size: 0.775rem; color: var(--muted); }
+  .svc-cta { font-size: 0.875rem; font-weight: 700; color: var(--white); background: var(--accent); padding: 0.65rem 1.5rem; border-radius: 8px; display: inline-block; transition: background 0.2s; }
+  .svc-cta:hover { background: var(--accent-light); }
 
-  /* RESPONSIVE */
-  @media (max-width: 640px) {
-    .p-card-rows { grid-template-columns: 1fr; }
-    .svc-grid { grid-template-columns: 1fr; }
-    .risk-grid { grid-template-columns: 1fr; }
-    .svc-cell:nth-child(3n) { border-right: 1px solid var(--border); }
-    .svc-cell { border-right: none; border-bottom: 1px solid var(--border); }
-    .svc-cell:last-child { border-bottom: none; }
-    .metrics-row { grid-template-columns: 1fr; }
-    .hero { padding: 3rem 1.5rem 2.5rem; }
-    .filter-section, .content { padding-left: 1.5rem; padding-right: 1.5rem; }
-    .site-header { padding: 0 1.5rem; }
-  }
+  /* SPACING */
+  .spacer { height: 2rem; }
 </style>
 </head>
 <body>
 
-<header class="site-header">
-  <a class="logo" href="index.html"><span>PROTIME</span> CONSULTING</a><a href="index.html" style="font-size:0.75rem;color:var(--text3);margin-left:1.5rem;font-family:'Epilogue',sans-serif;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--text2)'" onmouseout="this.style.color='var(--text3)'">← Packages</a>
-  <a class="nav-cta" href="checkout.html">Get Started</a>
-</header>
+<nav>
+  <div class="nav-logo">Protime <span>Consulting</span></div>
+  <div class="nav-links">
+    <a href="index.html">Packages</a>
+    <a href="platform-comparison.html" style="color:var(--text);">Why OpenClaw</a>
+    <a href="checkout.html">Order</a>
+    <a href="mailto:info@protimeconsulting.com">Contact</a>
+  </div>
+  <a href="checkout.html" class="nav-cta">Get Started</a>
+</nav>
 
 <section class="hero">
-  <p class="hero-eyebrow">OpenClaw Platform Guide · 2026</p>
-  <h1>Three paths to your <em>personal AI team.</em><br>Which one is right for you?</h1>
-  <p>Local hardware, cloud VM, or a purpose-built AI device — each option makes sense for a different situation. Use this guide to find your path, then let Protime handle the setup.</p>
+  <div class="hero-badge">Platform Guide · 2026</div>
+  <h1>Three paths to your <em>AI team.</em><br>Which one fits your business?</h1>
+  <p>Local hardware, cloud VM, or a purpose-built AI edge device — each makes sense for a different situation. Use this guide to understand the real costs, then let Protime handle the setup.</p>
 </section>
 
 <div class="filter-section">
-  <p class="filter-label">Filter by what matters to you</p>
   <div class="filter-row">
     <button class="f-btn active" onclick="setFilter('all')" id="f-all">Show all</button>
-    <button class="f-btn" onclick="setFilter('local')" id="f-local">I want local / private AI</button>
-    <button class="f-btn" onclick="setFilter('cloud')" id="f-cloud">I want cloud, no hardware</button>
-    <button class="f-btn" onclick="setFilter('now')" id="f-now">I need it available now</button>
+    <button class="f-btn" onclick="setFilter('local')" id="f-local">Local / private AI</button>
+    <button class="f-btn" onclick="setFilter('cloud')" id="f-cloud">Cloud, no hardware</button>
+    <button class="f-btn" onclick="setFilter('now')" id="f-now">Available now</button>
   </div>
 </div>
 
@@ -538,7 +213,7 @@
       <p class="metric-note">$350 hardware · ships today</p>
     </div>
     <div class="metric-cell">
-      <p class="metric-platform">Mac Mini 24GB</p>
+      <p class="metric-platform">Mac Mini M4 24GB</p>
       <p class="metric-amount">$1,419</p>
       <p class="metric-note">$799 hardware · backorder Jun</p>
     </div>
@@ -553,40 +228,36 @@
   <div class="chart-block">
     <div class="chart-title">Monthly spend — LLM + hosting + power</div>
     <div class="legend-row">
-      <span class="legend-item"><span class="legend-dot" style="background:#2dd4a0"></span>Jetson / Protime</span>
-      <span class="legend-item"><span class="legend-dot" style="background:#5b9cf6"></span>Mac Mini 24GB (local LLM)</span>
-      <span class="legend-item"><span class="legend-dot" style="background:#f5a623"></span>DigitalOcean 8GB</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#22c55e"></span>Jetson / Protime</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#3b82f6"></span>Mac Mini 24GB</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#f59e0b"></span>DigitalOcean 8GB</span>
     </div>
-    <div style="position:relative;height:200px;">
-      <canvas id="monthlyChart"></canvas>
-    </div>
+    <div style="position:relative;height:200px;"><canvas id="monthlyChart"></canvas></div>
   </div>
 
   <div class="chart-block">
     <div class="chart-title">Cumulative spend over 12 months</div>
     <div class="legend-row">
-      <span class="legend-item"><span class="legend-dot" style="background:#2dd4a0"></span>Jetson / Protime</span>
-      <span class="legend-item"><span class="legend-dot" style="background:#5b9cf6"></span>Mac Mini 24GB (local LLM)</span>
-      <span class="legend-item"><span class="legend-dot" style="background:#f5a623"></span>DigitalOcean 8GB</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#22c55e"></span>Jetson / Protime</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#3b82f6"></span>Mac Mini 24GB</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#f59e0b"></span>DigitalOcean 8GB</span>
     </div>
-    <div style="position:relative;height:220px;">
-      <canvas id="cumulChart"></canvas>
-    </div>
+    <div style="position:relative;height:220px;"><canvas id="cumulChart"></canvas></div>
   </div>
 
   <div class="note-strip">
     Mac Mini ($799 with 256GB NVMe) runs Qwen or Phi-4 locally — no API cost for core inference. Supplemental cloud calls for image generation, embeddings, and advanced reasoning add $50–60/month. Jetson and DigitalOcean use Claude via routed API; month 1 setup runs ~$300, then drops to $75–90/mo once routing and token budgets are configured.
   </div>
 
+  <div class="spacer"></div>
   <p class="s-label">Platform details</p>
   <div class="platform-cards">
 
-    <!-- JETSON -->
     <div class="p-card" id="card-jetson">
       <div class="p-card-header">
         <div>
           <p class="p-card-title">Jetson Orin Nano Developer Kit + NVMe 128GB</p>
-          <p class="p-card-sub">$250 device + $100 NVMe · NVIDIA edge AI platform</p>
+          <p class="p-card-sub">$250 device + $100 NVMe · NVIDIA edge AI platform · 40 TOPS</p>
         </div>
         <div class="badge-row">
           <span class="badge badge-green">Lowest entry cost</span>
@@ -605,12 +276,11 @@
       </div>
     </div>
 
-    <!-- MAC MINI -->
     <div class="p-card" id="card-mac">
       <div class="p-card-header">
         <div>
           <p class="p-card-title">Mac Mini M4 24GB + NVMe 256GB</p>
-          <p class="p-card-sub">$799 with 256GB NVMe · local LLM powerhouse</p>
+          <p class="p-card-sub">$799 with 256GB NVMe · local LLM powerhouse · 14B+ params on-device</p>
         </div>
         <div class="badge-row">
           <span class="badge badge-blue">Best local LLM</span>
@@ -622,22 +292,20 @@
         <div class="data-row"><span class="dr-label">Month 1 setup cost</span><span class="dr-val good">~$15 (Qwen runs local — no API)</span></div>
         <div class="data-row"><span class="dr-label">Core LLM (Qwen / Phi-4 local)</span><span class="dr-val good">$0 / mo</span></div>
         <div class="data-row"><span class="dr-label">Supplemental cloud models</span><span class="dr-val warn">$50–60 / mo</span></div>
-        <div class="data-row"><span class="dr-label">Supplemental use cases</span><span class="dr-val">Image gen, embeddings, advanced reasoning</span></div>
         <div class="data-row"><span class="dr-label">Year 1 total</span><span class="dr-val warn">$1,419</span></div>
         <div class="data-row"><span class="dr-label">Year 2+ annual</span><span class="dr-val good">~$660</span></div>
         <div class="data-row"><span class="dr-label">Data sovereignty</span><span class="dr-val good">Full — core inference stays local</span></div>
-        <div class="data-row"><span class="dr-label">24GB enables</span><span class="dr-val good">14B+ parameter local models</span></div>
-        <div class="data-row"><span class="dr-label">LLM optimization</span><span class="dr-val warn">Required — foreign model, needs tuning</span></div>
+        <div class="data-row"><span class="dr-label">Local LLM capability</span><span class="dr-val good">14B+ parameter models</span></div>
+        <div class="data-row"><span class="dr-label">LLM optimization required</span><span class="dr-val warn">Yes — foreign model needs tuning</span></div>
         <div class="data-row"><span class="dr-label">Availability</span><span class="dr-val bad">Backorder — estimated June delivery</span></div>
       </div>
     </div>
 
-    <!-- DIGITAL OCEAN -->
     <div class="p-card" id="card-do">
       <div class="p-card-header">
         <div>
           <p class="p-card-title">DigitalOcean 8GB Droplet</p>
-          <p class="p-card-sub">$0 upfront · $48/mo hosting · cloud-hosted node</p>
+          <p class="p-card-sub">$0 upfront · $48/mo hosting · cloud-hosted node · no hardware to manage</p>
         </div>
         <div class="badge-row">
           <span class="badge badge-green">No hardware needed</span>
@@ -663,7 +331,7 @@
   <div class="risk-grid">
     <div class="risk-cell">
       <p class="risk-title">API keys in tools.md or committed .env files</p>
-      <p class="risk-body">Credentials stored in tools.md or any file tracked by a git repository are effectively public. Scrapers harvest exposed keys within minutes of a push — and git history preserves them even after deletion. Secrets belong in a .env explicitly excluded from version control, rotated immediately if exposure is suspected.</p>
+      <p class="risk-body">Credentials stored in any file tracked by git are effectively public. Scrapers harvest exposed keys within minutes of a push — and git history preserves them even after deletion. Secrets belong in a .env explicitly excluded from version control, rotated immediately if exposure is suspected.</p>
     </div>
     <div class="risk-cell">
       <p class="risk-title">No backup repository = no disaster recovery</p>
@@ -675,9 +343,8 @@
   <div class="routing-block">
     <div class="routing-header">
       <h2>Right model. Right task. Zero waste.</h2>
-      <p>Not every agent task needs a frontier model. Protime maps each task in your system to the most cost-effective model that can handle it — local where it makes sense, cloud where it has to be. The result is a system that performs like a premium setup and costs like a lean one.</p>
+      <p>Not every agent task needs a frontier model. Protime maps each task in your system to the most cost-effective model that can handle it — local where it makes sense, cloud where it has to be. The result: a system that performs like a premium setup and costs like a lean one.</p>
     </div>
-
     <div class="model-compare-grid">
       <div class="model-col">
         <p class="model-col-label local">Local · On-device · $0/call</p>
@@ -686,8 +353,7 @@
         <div class="model-stat-row"><span class="msr-label">Cost per call</span><span class="msr-val good">$0.00 (local inference)</span></div>
         <div class="model-stat-row"><span class="msr-label">Speed on Mac Mini 24GB</span><span class="msr-val good">&gt;25 tokens / sec</span></div>
         <div class="model-stat-row"><span class="msr-label">Standard coding tasks</span><span class="msr-val good">Strong — matches paid models</span></div>
-        <div class="model-stat-row"><span class="msr-label">Advanced reasoning</span><span class="msr-val warn">Ceiling exists — not for complex logic</span></div>
-        <div class="model-stat-row"><span class="msr-label">Instruction following</span><span class="msr-val warn">Good, tends toward verbosity</span></div>
+        <div class="model-stat-row"><span class="msr-label">Advanced reasoning</span><span class="msr-val warn">Ceiling exists — fails complex logic</span></div>
         <div class="model-stat-row"><span class="msr-label">Context window</span><span class="msr-val">32K native · 128K extended</span></div>
         <div class="model-stat-row"><span class="msr-label">Data sovereignty</span><span class="msr-val good">Full — never leaves your device</span></div>
         <div class="model-stat-row"><span class="msr-label">Best for</span><span class="msr-val">Routine tasks · high-frequency agents</span></div>
@@ -698,103 +364,35 @@
         <p class="model-meta">claude-sonnet-4-6 · 1M context · 64K output · Feb 2026</p>
         <div class="model-stat-row"><span class="msr-label">Cost per call</span><span class="msr-val warn">$3 input / $15 output per MTok</span></div>
         <div class="model-stat-row"><span class="msr-label">vs Qwen3-14B cost</span><span class="msr-val bad">~50× more expensive per token</span></div>
-        <div class="model-stat-row"><span class="msr-label">Complex reasoning / logic</span><span class="msr-val good">Best-in-class — solves what Qwen can't</span></div>
+        <div class="model-stat-row"><span class="msr-label">Complex reasoning</span><span class="msr-val good">Best-in-class — solves what Qwen can't</span></div>
         <div class="model-stat-row"><span class="msr-label">Agentic orchestration</span><span class="msr-val good">Excellent — delegates, plans, recovers</span></div>
-        <div class="model-stat-row"><span class="msr-label">Tool use / MCP connectors</span><span class="msr-val good">First-try reliability on complex setups</span></div>
         <div class="model-stat-row"><span class="msr-label">Context window</span><span class="msr-val good">1M tokens — handles full agent state</span></div>
         <div class="model-stat-row"><span class="msr-label">Adaptive thinking</span><span class="msr-val good">thinking: adaptive — scales to task</span></div>
         <div class="model-stat-row"><span class="msr-label">Best for</span><span class="msr-val">Orchestration · reasoning · complex tools</span></div>
       </div>
     </div>
-
     <div class="routing-table-wrap">
       <table class="routing-table">
         <thead>
-          <tr>
-            <th>Agent task</th>
-            <th>Model assigned</th>
-            <th>Frequency</th>
-            <th>Why</th>
-          </tr>
+          <tr><th>Agent task</th><th>Model assigned</th><th>Frequency</th><th>Why</th></tr>
         </thead>
         <tbody>
-          <tr>
-            <td class="rt-task">Watch market scanning (eBay, Reddit, TRF)</td>
-            <td><span class="rt-model rt-local">Qwen3-14B · local</span></td>
-            <td>Continuous</td>
-            <td>Structured data extraction — no reasoning ceiling hit</td>
-          </tr>
-          <tr>
-            <td class="rt-task">Opportunity classification & scoring</td>
-            <td><span class="rt-model rt-local">Qwen3-14B · local</span></td>
-            <td>Per result</td>
-            <td>JSON classification — fast, deterministic, free</td>
-          </tr>
-          <tr>
-            <td class="rt-task">Real estate lead analysis</td>
-            <td><span class="rt-model rt-local">Qwen3-14B · local</span></td>
-            <td>Daily batch</td>
-            <td>Pattern matching and summarization — within local capability</td>
-          </tr>
-          <tr>
-            <td class="rt-task">Social media drafting & scheduling</td>
-            <td><span class="rt-model rt-either">Either — routed by complexity</span></td>
-            <td>Daily</td>
-            <td>Simple drafts go local; brand-sensitive or long-form routes to cloud</td>
-          </tr>
-          <tr>
-            <td class="rt-task">Agent orchestration decisions</td>
-            <td><span class="rt-model rt-cloud">Sonnet 4.6 · cloud</span></td>
-            <td>On trigger</td>
-            <td>Multi-step planning requires frontier reasoning and 1M context</td>
-          </tr>
-          <tr>
-            <td class="rt-task">MCP connector setup & tool calls</td>
-            <td><span class="rt-model rt-cloud">Sonnet 4.6 · cloud</span></td>
-            <td>On demand</td>
-            <td>First-try reliability on complex tool chains — Qwen struggles here</td>
-          </tr>
-          <tr>
-            <td class="rt-task">Image processing / vision tasks</td>
-            <td><span class="rt-model rt-cloud">Sonnet 4.6 · cloud</span></td>
-            <td>Per asset</td>
-            <td>Vision input requires cloud API — local Qwen is text-only</td>
-          </tr>
-          <tr>
-            <td class="rt-task">Embeddings for semantic search</td>
-            <td><span class="rt-model rt-cloud">Embed API · cloud</span></td>
-            <td>Batch</td>
-            <td>Dedicated embedding model — cheaper than using a full LLM</td>
-          </tr>
-          <tr>
-            <td class="rt-task">Financial tracking & alerting</td>
-            <td><span class="rt-model rt-local">Qwen3-14B · local</span></td>
-            <td>Nightly</td>
-            <td>Arithmetic and threshold checks — no cloud needed</td>
-          </tr>
-          <tr>
-            <td class="rt-task">Good morning / routine status check</td>
-            <td><span class="rt-model rt-local">Qwen3-14B · local</span></td>
-            <td>Daily</td>
-            <td>Prevent the $0.75 "Good morning" — this is exactly why routing exists</td>
-          </tr>
+          <tr><td class="rt-task">Market scanning (eBay, Reddit, forums)</td><td><span class="rt-model rt-local">Qwen3-14B · local</span></td><td>Continuous</td><td>Structured data extraction — no reasoning ceiling hit</td></tr>
+          <tr><td class="rt-task">Opportunity classification & scoring</td><td><span class="rt-model rt-local">Qwen3-14B · local</span></td><td>Per result</td><td>JSON classification — fast, deterministic, free</td></tr>
+          <tr><td class="rt-task">Real estate lead analysis</td><td><span class="rt-model rt-local">Qwen3-14B · local</span></td><td>Daily batch</td><td>Pattern matching and summarization — within local capability</td></tr>
+          <tr><td class="rt-task">Social media drafting & scheduling</td><td><span class="rt-model rt-either">Either — routed by complexity</span></td><td>Daily</td><td>Simple drafts go local; brand-sensitive or long-form routes to cloud</td></tr>
+          <tr><td class="rt-task">Agent orchestration decisions</td><td><span class="rt-model rt-cloud">Sonnet 4.6 · cloud</span></td><td>On trigger</td><td>Multi-step planning requires frontier reasoning and 1M context</td></tr>
+          <tr><td class="rt-task">MCP connector setup & tool calls</td><td><span class="rt-model rt-cloud">Sonnet 4.6 · cloud</span></td><td>On demand</td><td>First-try reliability on complex tool chains — Qwen struggles here</td></tr>
+          <tr><td class="rt-task">Image processing / vision tasks</td><td><span class="rt-model rt-cloud">Sonnet 4.6 · cloud</span></td><td>Per asset</td><td>Vision input requires cloud API — local Qwen is text-only</td></tr>
+          <tr><td class="rt-task">Financial tracking & alerting</td><td><span class="rt-model rt-local">Qwen3-14B · local</span></td><td>Nightly</td><td>Arithmetic and threshold checks — no cloud needed</td></tr>
+          <tr><td class="rt-task">Good morning / routine status check</td><td><span class="rt-model rt-local">Qwen3-14B · local</span></td><td>Daily</td><td>Prevent the $0.75 "Good morning" — this is exactly why routing exists</td></tr>
         </tbody>
       </table>
     </div>
-
     <div class="routing-insight">
-      <div class="ri-stat">
-        <span class="ri-num">~80%</span>
-        <span class="ri-label">of agent tasks routed to local or lower-cost models</span>
-      </div>
-      <div class="ri-stat">
-        <span class="ri-num">50×</span>
-        <span class="ri-label">cost difference per token between Qwen3-14B and Sonnet 4.6</span>
-      </div>
-      <div class="ri-stat">
-        <span class="ri-num">&lt;$100</span>
-        <span class="ri-label">monthly LLM spend on an optimized Protime configuration</span>
-      </div>
+      <div class="ri-stat"><span class="ri-num">~80%</span><span class="ri-label">of agent tasks routed to local or lower-cost models</span></div>
+      <div class="ri-stat"><span class="ri-num">50×</span><span class="ri-label">cost difference per token between Qwen3-14B and Sonnet 4.6</span></div>
+      <div class="ri-stat"><span class="ri-num">&lt;$100</span><span class="ri-label">monthly LLM spend on an optimized Protime configuration</span></div>
     </div>
   </div>
 
@@ -805,52 +403,33 @@
       <p>Whether you're choosing a platform, already running one, or need your agents doing more — Protime handles the configuration work so you don't have to learn it the expensive way.</p>
     </div>
     <div class="svc-grid">
-      <div class="svc-cell">
-        <p class="svc-icon">01 · Assess</p>
-        <p class="svc-title">Platform selection</p>
-        <p class="svc-desc">Not sure which path fits your situation? I research availability, specs, and total cost and give you a clear, unbiased recommendation before you spend a dollar.</p>
-      </div>
-      <div class="svc-cell">
-        <p class="svc-icon">02 · Harden</p>
-        <p class="svc-title">Device setup & security</p>
-        <p class="svc-desc">OS config, OpenClaw install, credential management, .env security, and a private git repo — done correctly from day one. No exposed keys, no single point of failure.</p>
-      </div>
-      <div class="svc-cell">
-        <p class="svc-icon">03 · Architect</p>
-        <p class="svc-title">Agent architecture & routing</p>
-        <p class="svc-desc">Model tier assignments, token budgets, task scheduling, and inter-agent communication. Agents that work lean, don't drift, and don't generate surprise bills.</p>
-      </div>
-      <div class="svc-cell">
-        <p class="svc-icon">04 · Deploy</p>
-        <p class="svc-title">Custom agent deployment</p>
-        <p class="svc-desc">Watch trading intelligence, real estate lead sourcing, social media management, opportunity sourcing, financial tracking — built to your workflow and your data.</p>
-      </div>
-      <div class="svc-cell">
-        <p class="svc-icon">05 · Optimize</p>
-        <p class="svc-title">Cost & performance audit</p>
-        <p class="svc-desc">Already running but overspending? I audit your config, rebuild routing, and cut LLM costs to under $100/month. Bring your current bill and we'll fix it.</p>
-      </div>
-      <div class="svc-cell">
-        <p class="svc-icon">06 · Sustain</p>
-        <p class="svc-title">Ongoing support</p>
-        <p class="svc-desc">Monthly check-ins, agent tuning as your needs evolve, connector updates, and priority response when something breaks. Your system stays current.</p>
-      </div>
+      <div class="svc-cell"><p class="svc-icon">01 · Assess</p><p class="svc-title">Platform selection</p><p class="svc-desc">Not sure which path fits? I research availability, specs, and total cost and give you a clear recommendation before you spend a dollar.</p></div>
+      <div class="svc-cell"><p class="svc-icon">02 · Harden</p><p class="svc-title">Device setup & security</p><p class="svc-desc">OS config, OpenClaw install, credential management, .env security, and a private git repo — done correctly from day one. No exposed keys, no single point of failure.</p></div>
+      <div class="svc-cell"><p class="svc-icon">03 · Architect</p><p class="svc-title">Agent architecture & routing</p><p class="svc-desc">Model tier assignments, token budgets, task scheduling, and inter-agent communication. Agents that work lean, don't drift, and don't generate surprise bills.</p></div>
+      <div class="svc-cell"><p class="svc-icon">04 · Deploy</p><p class="svc-title">Custom agent deployment</p><p class="svc-desc">Opportunity sourcing, lead research, social media management, financial tracking — built to your workflow and your data.</p></div>
+      <div class="svc-cell"><p class="svc-icon">05 · Optimize</p><p class="svc-title">Cost & performance audit</p><p class="svc-desc">Already running but overspending? I audit your config, rebuild routing, and cut LLM costs to under $100/month. Bring your current bill and we'll fix it.</p></div>
+      <div class="svc-cell"><p class="svc-icon">06 · Sustain</p><p class="svc-title">Ongoing support</p><p class="svc-desc">Monthly check-ins, agent tuning as your needs evolve, connector updates, and priority response when something breaks. Your system stays current.</p></div>
     </div>
     <div class="svc-footer">
       <p>All platforms supported · Corp-to-Corp available · Philadelphia, PA</p>
-      <a class="svc-cta" href="checkout.html">Get started with Protime →</a><br><a href="mailto:info@protimeconsulting.com" style="font-size:0.8rem;color:var(--text2);margin-top:0.5rem;display:inline-block;">or email info@protimeconsulting.com</a>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.4rem;">
+        <a class="svc-cta" href="checkout.html">Get started with Protime →</a>
+        <a href="mailto:info@protimeconsulting.com" style="font-size:0.775rem;color:var(--muted);">or email info@protimeconsulting.com</a>
+      </div>
     </div>
   </div>
 
 </div>
 
+<footer style="text-align:center;color:var(--muted);font-size:0.8rem;border-top:1px solid var(--border);padding:1.5rem 2rem;">
+  © 2026 Protime Consulting Inc. · <a href="index.html" style="color:var(--accent-light);">Back to Packages</a> · <a href="mailto:info@protimeconsulting.com" style="color:var(--accent-light);">Contact</a>
+</footer>
+
 <script>
   const months = ['M1','M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12'];
-
   const jM = months.map((_,i)=> i===0 ? 301 : 76);
   const mM = months.map((_,i)=> i===0 ? 17  : 55);
   const dM = months.map((_,i)=> i===0 ? 348 : 123);
-
   let jt=350, mt=799, dt=0;
   const jC=[],mC=[],dC=[];
   for(let i=0;i<12;i++){
@@ -858,42 +437,37 @@
     mt+=mM[i]; mC.push(mt);
     dt+=dM[i]; dC.push(dt);
   }
-
-  const gc='rgba(255,255,255,0.05)';
-  const tc='#5c5b57';
-  const commonOpts = {
-    responsive:true,
-    maintainAspectRatio:false,
+  const gc='rgba(255,255,255,0.04)';
+  const tc='#8b91a0';
+  const baseOpts = {
+    responsive:true, maintainAspectRatio:false,
     plugins:{legend:{display:false}},
     scales:{
-      y:{ticks:{callback:v=>'$'+v,font:{size:11,family:'DM Mono'},color:tc},grid:{color:gc},border:{display:false}},
-      x:{ticks:{font:{size:11,family:'DM Mono'},color:tc},grid:{display:false},border:{display:false}}
+      y:{ticks:{callback:v=>'$'+v,font:{size:11,family:'Inter'},color:tc},grid:{color:gc},border:{display:false}},
+      x:{ticks:{font:{size:11,family:'Inter'},color:tc},grid:{display:false},border:{display:false}}
     }
   };
-
   new Chart(document.getElementById('monthlyChart'),{
     type:'bar',
     data:{labels:months,datasets:[
-      {label:'Jetson',data:jM,backgroundColor:'rgba(45,212,160,0.75)',borderRadius:2},
-      {label:'Mac Mini',data:mM,backgroundColor:'rgba(91,156,246,0.75)',borderRadius:2},
-      {label:'DigitalOcean',data:dM,backgroundColor:'rgba(245,166,35,0.75)',borderRadius:2}
+      {label:'Jetson',data:jM,backgroundColor:'rgba(34,197,94,0.7)',borderRadius:3},
+      {label:'Mac Mini',data:mM,backgroundColor:'rgba(59,130,246,0.7)',borderRadius:3},
+      {label:'DigitalOcean',data:dM,backgroundColor:'rgba(245,158,11,0.7)',borderRadius:3}
     ]},
-    options:commonOpts
+    options:baseOpts
   });
-
   new Chart(document.getElementById('cumulChart'),{
     type:'line',
     data:{labels:months,datasets:[
-      {label:'Jetson',data:jC,borderColor:'#2dd4a0',backgroundColor:'transparent',borderWidth:2,pointRadius:3,tension:0.3,pointBackgroundColor:'#2dd4a0'},
-      {label:'Mac Mini',data:mC,borderColor:'#5b9cf6',backgroundColor:'transparent',borderWidth:2,pointRadius:3,tension:0.3,pointBackgroundColor:'#5b9cf6'},
-      {label:'DigitalOcean',data:dC,borderColor:'#f5a623',backgroundColor:'transparent',borderWidth:2,pointRadius:3,tension:0.3,pointBackgroundColor:'#f5a623'}
+      {label:'Jetson',data:jC,borderColor:'#22c55e',backgroundColor:'transparent',borderWidth:2,pointRadius:3,tension:0.3,pointBackgroundColor:'#22c55e'},
+      {label:'Mac Mini',data:mC,borderColor:'#3b82f6',backgroundColor:'transparent',borderWidth:2,pointRadius:3,tension:0.3,pointBackgroundColor:'#3b82f6'},
+      {label:'DigitalOcean',data:dC,borderColor:'#f59e0b',backgroundColor:'transparent',borderWidth:2,pointRadius:3,tension:0.3,pointBackgroundColor:'#f59e0b'}
     ]},
-    options:{...commonOpts,scales:{
-      y:{ticks:{callback:v=>'$'+v.toLocaleString(),font:{size:11,family:'DM Mono'},color:tc},grid:{color:gc},border:{display:false}},
-      x:{ticks:{font:{size:11,family:'DM Mono'},color:tc},grid:{display:false},border:{display:false}}
+    options:{...baseOpts,scales:{
+      y:{ticks:{callback:v=>'$'+v.toLocaleString(),font:{size:11,family:'Inter'},color:tc},grid:{color:gc},border:{display:false}},
+      x:{ticks:{font:{size:11,family:'Inter'},color:tc},grid:{display:false},border:{display:false}}
     }}
   });
-
   function setFilter(q){
     ['all','local','cloud','now'].forEach(id=>{
       document.getElementById('f-'+id).classList.toggle('active', id===q);

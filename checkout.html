@@ -108,7 +108,7 @@
     .standalone-card h4 { font-size: 0.875rem; font-weight: 700; color: var(--white); }
     .standalone-card p { font-size: 0.8rem; color: var(--muted); flex: 1; }
     .standalone-card .s-price { font-size: 1rem; font-weight: 700; color: var(--accent-light); }
-    .btn-standalone { display: block; text-align: center; background: transparent; color: var(--accent-light); border: 1px solid rgba(59,130,246,0.3); border-radius: 6px; padding: 0.5rem 1rem; font-size: 0.825rem; font-weight: 600; transition: background 0.2s; }
+    .btn-standalone { display: block; width: 100%; text-align: center; background: transparent; color: var(--accent-light); border: 1px solid rgba(59,130,246,0.3); border-radius: 6px; padding: 0.5rem 1rem; font-size: 0.825rem; font-weight: 600; transition: background 0.2s; cursor: pointer; font-family: inherit; }
     .btn-standalone:hover { background: rgba(37,99,235,0.08); }
 
     /* FOOTER */
@@ -287,6 +287,7 @@
         <button class="btn-checkout" id="checkout-btn" disabled onclick="goCheckout()">
           Proceed to Checkout →
         </button>
+        <div id="checkout-error"></div>
         <div class="checkout-note">Secure checkout via Stripe. No account required.</div>
         <div class="stripe-badge">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#8b91a0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -309,19 +310,19 @@
       <h4>Consulting — 2 Hours</h4>
       <p>Strategy session: architecture review, workflow design, custom integration planning, AI roadmap.</p>
       <div class="s-price">$250</div>
-      <a href="https://buy.stripe.com/test_4gM9AS87SdOc3ah7ypgjC0o" class="btn-standalone" target="_blank">Book Now →</a>
+      <button class="btn-standalone" onclick="goStandalone('consult_2hr')">Book Now →</button>
     </div>
     <div class="standalone-card">
       <h4>Consulting — 5 Hours</h4>
       <p>Extended advisory block. Multi-agent strategy, complex builds, ongoing architecture work.</p>
       <div class="s-price">$625</div>
-      <a href="https://buy.stripe.com/test_14AcN43RC6lK4el2e5gjC0p" class="btn-standalone" target="_blank">Book Now →</a>
+      <button class="btn-standalone" onclick="goStandalone('consult_5hr')">Book Now →</button>
     </div>
     <div class="standalone-card">
       <h4>Maintenance Pack</h4>
       <p>One-time deep system audit, LLM prompt refresh, connector health check, performance optimization.</p>
       <div class="s-price">$350</div>
-      <a href="https://buy.stripe.com/test_eVqeVc0Fq4dC7qx4mdgjC0n" class="btn-standalone" target="_blank">Book Now →</a>
+      <button class="btn-standalone" onclick="goStandalone('maintenance')">Book Now →</button>
     </div>
   </div>
 
@@ -461,42 +462,78 @@
     btn.disabled = !selectedPackage;
   }
 
-  // ── Checkout Routing ──────────────────────────────────────────────────────
-  function goCheckout() {
+  // ── Checkout — POST to server, redirect to Stripe session ────────────────
+  const CHECKOUT_API = 'https://screenai.tailff380a.ts.net/checkout/create-checkout';
+  const STANDALONE_API = 'https://screenai.tailff380a.ts.net/checkout/create-standalone';
+
+  async function goCheckout() {
     if (!selectedPackage) return;
 
+    const btn = document.getElementById('checkout-btn');
+    btn.disabled = true;
+    btn.textContent = 'Preparing checkout…';
+
     const addons = Object.keys(selectedAddons);
-    const hasSupport = addons.includes('support-basic') || addons.includes('support-advanced');
-    const hasHosting = addons.includes('hosting');
-    const supportId = addons.includes('support-basic') ? 'support-basic' : 'support-advanced';
+    const include_support  = addons.includes('support-basic') || addons.includes('support-advanced');
+    const include_hosting  = addons.includes('hosting');
+    const oneTimeAddons    = addons.filter(a => !['support-basic','support-advanced','hosting'].includes(a));
 
-    // Try to find a pre-built bundle link first
-    let key = selectedPackage;
-    if (hasSupport) key += '+' + supportId;
-    if (hasHosting && hasSupport) key += '+hosting';
+    try {
+      const res = await fetch(CHECKOUT_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          package_id: selectedPackage,
+          include_support,
+          include_hosting,
+          addons: oneTimeAddons,
+        })
+      });
 
-    let url = LINKS[key];
-
-    // If no exact bundle match, fall back to package-only link
-    // (addons that don't have a bundle get their own separate checkout)
-    if (!url) url = LINKS[selectedPackage];
-
-    // Handle single add-ons with no package bundle — open in sequence
-    // For now, route to the best matching link and note remaining
-    const addonOnlyItems = addons.filter(a => !['support-basic','support-advanced','hosting'].includes(a));
-    // Addon-only items (agent, search, maintenance) are individual links shown below summary
-    // if selected alongside a package — open package checkout first, addons shown as follow-up
-    if (addonOnlyItems.length > 0 && !url.includes('bundle')) {
-      // Will open package link, addons handled by showing reminder
-    }
-
-    window.open(url, '_blank');
-
-    // If they selected add-ons that aren't in the bundle, open them too
-    for (const addonId of addonOnlyItems) {
-      if (LINKS[addonId]) {
-        setTimeout(() => window.open(LINKS[addonId], '_blank'), 600);
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error || `Server error ${res.status}`);
       }
+
+      const { url } = await res.json();
+      if (!url) throw new Error('No checkout URL returned');
+
+      // Redirect to Stripe — same tab so back button works naturally
+      window.location.href = url;
+
+    } catch (err) {
+      console.error('Checkout error:', err);
+      btn.disabled = false;
+      btn.textContent = 'Proceed to Checkout →';
+      // Show inline error
+      let errEl = document.getElementById('checkout-error');
+      if (!errEl) {
+        errEl = document.createElement('div');
+        errEl.id = 'checkout-error';
+        errEl.style.cssText = 'font-size:0.8rem;color:#ef4444;text-align:center;margin-top:0.5rem;';
+        btn.parentNode.insertBefore(errEl, btn.nextSibling);
+      }
+      errEl.textContent = 'Could not start checkout: ' + err.message + '. Try again or email info@protimeconsulting.com';
+    }
+  }
+
+  async function goStandalone(product_id) {
+    const btn = event.target;
+    btn.disabled = true;
+    btn.textContent = 'Loading…';
+    try {
+      const res = await fetch(STANDALONE_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ product_id })
+      });
+      if (!res.ok) throw new Error('Server error');
+      const { url } = await res.json();
+      window.location.href = url;
+    } catch(err) {
+      btn.disabled = false;
+      btn.textContent = 'Book Now →';
+      alert('Could not start checkout. Please email info@protimeconsulting.com');
     }
   }
 </script>
