@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Package Comparison — AI Agent Infrastructure | Protime Consulting</title>
+  <meta name="description" content="Full platform comparison: Starter vs Executive AI agent infrastructure. Powered by NVIDIA Jetson. Not just hardware — a persistent AI knowledge platform built for your business." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #0a0a0a;
+      --dark: #111318;
+      --card: #16191f;
+      --card-alt: #13161c;
+      --border: #23272f;
+      --accent: #2563eb;
+      --accent-light: #3b82f6;
+      --text: #e8eaf0;
+      --muted: #8b91a0;
+      --white: #ffffff;
+      --green: #22c55e;
+      --amber: #f59e0b;
+      --purple: #a855f7;
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--black); color: var(--text); line-height: 1.6; }
+    a { color: inherit; text-decoration: none; }
+
+    /* NAV */
+    nav {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.25rem 2rem; border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; background: rgba(10,10,10,0.95);
+      backdrop-filter: blur(8px); z-index: 100;
+    }
+    .nav-logo { font-weight: 700; font-size: 1rem; letter-spacing: -0.01em; }
+    .nav-logo span { color: var(--accent-light); }
+    .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+    .nav-links a { font-size: 0.875rem; color: var(--muted); transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      background: var(--accent); color: var(--white);
+      padding: 0.5rem 1.25rem; border-radius: 6px;
+      font-size: 0.875rem; font-weight: 600; transition: background 0.2s;
+    }
+    .nav-cta:hover { background: var(--accent-light); color: var(--white); }
+
+    /* BUTTONS */
+    .btn-primary {
+      background: var(--accent); color: var(--white);
+      padding: 0.875rem 2rem; border-radius: 8px; font-weight: 700;
+      font-size: 1rem; transition: background 0.2s, transform 0.15s; display: inline-block;
+    }
+    .btn-primary:hover { background: var(--accent-light); transform: translateY(-1px); }
+    .btn-secondary {
+      background: transparent; color: var(--text);
+      padding: 0.875rem 2rem; border-radius: 8px; font-weight: 600;
+      font-size: 1rem; border: 1px solid var(--border);
+      transition: border-color 0.2s, transform 0.15s; display: inline-block;
+    }
+    .btn-secondary:hover { border-color: var(--muted); transform: translateY(-1px); }
+    .btn-ghost {
+      background: transparent; color: var(--accent-light);
+      padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600;
+      font-size: 0.9rem; border: 1px solid rgba(59,130,246,0.3);
+      transition: border-color 0.2s, background 0.2s; display: inline-block;
+    }
+    .btn-ghost:hover { background: rgba(37,99,235,0.08); border-color: var(--accent-light); }
+    .btn-green {
+      background: rgba(34,197,94,0.12); color: var(--green);
+      padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600;
+      font-size: 0.875rem; border: 1px solid rgba(34,197,94,0.25);
+      transition: background 0.2s; display: inline-block; text-align: center;
+    }
+    .btn-green:hover { background: rgba(34,197,94,0.2); }
+
+    /* SECTIONS */
+    section { padding: 5rem 2rem; }
+    .section-inner { max-width: 1080px; margin: 0 auto; }
+    .section-label {
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--accent-light); margin-bottom: 1rem;
+    }
+    .section-title {
+      font-size: clamp(1.75rem, 3.5vw, 2.5rem); font-weight: 800;
+      letter-spacing: -0.02em; color: var(--white); margin-bottom: 1rem;
+    }
+    .section-sub { font-size: 1.05rem; color: var(--muted); max-width: 640px; margin-bottom: 3rem; }
+
+    /* HERO */
+    .hero { max-width: 860px; margin: 0 auto; padding: 5rem 2rem 4rem; text-align: center; }
+    .hero-badge {
+      display: inline-block; background: rgba(37,99,235,0.12);
+      color: var(--accent-light); border: 1px solid rgba(59,130,246,0.25);
+      border-radius: 100px; font-size: 0.8rem; font-weight: 600;
+      padding: 0.35rem 1rem; margin-bottom: 2rem; letter-spacing: 0.03em; text-transform: uppercase;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 4.5vw, 3rem); font-weight: 800; line-height: 1.1;
+      letter-spacing: -0.03em; margin-bottom: 1.5rem; color: var(--white);
+    }
+    .hero h1 em { font-style: normal; color: var(--accent-light); }
+    .hero p { font-size: 1.1rem; color: var(--muted); max-width: 620px; margin: 0 auto 2rem; }
+
+    /* PLATFORM POSITIONING */
+    .platform-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; margin-bottom: 3rem; }
+    .platform-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; }
+    .platform-card .p-icon { font-size: 1.5rem; margin-bottom: 0.75rem; }
+    .platform-card h4 { font-size: 0.925rem; font-weight: 700; color: var(--white); margin-bottom: 0.4rem; }
+    .platform-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.55; }
+
+    /* COMPARISON COLUMNS */
+    .compare-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    @media (max-width: 720px) { .compare-wrap { grid-template-columns: 1fr; } }
+
+    .compare-col {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 16px; overflow: hidden;
+    }
+    .compare-col.featured { border-color: var(--accent); background: linear-gradient(160deg, #16191f 0%, #111b2e 100%); }
+
+    .compare-header { padding: 2rem 2rem 1.5rem; border-bottom: 1px solid var(--border); position: relative; }
+    .compare-col.featured .compare-header { border-color: rgba(37,99,235,0.3); }
+    .featured-tag {
+      position: absolute; top: 0; right: 1.5rem;
+      background: var(--accent); color: var(--white);
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; padding: 0.3rem 0.85rem; border-radius: 0 0 8px 8px;
+    }
+    .compare-tier { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-light); margin-bottom: 0.5rem; }
+    .compare-name { font-size: 1.5rem; font-weight: 800; color: var(--white); margin-bottom: 0.25rem; letter-spacing: -0.02em; }
+    .compare-price { font-size: 2.5rem; font-weight: 800; color: var(--white); letter-spacing: -0.03em; margin-bottom: 0.25rem; }
+    .compare-price span { font-size: 0.95rem; font-weight: 500; color: var(--muted); }
+    .compare-tagline { font-size: 0.875rem; color: var(--muted); margin-bottom: 1.25rem; }
+    .compare-payment { font-size: 0.8rem; color: var(--accent-light); background: rgba(37,99,235,0.08); border: 1px solid rgba(59,130,246,0.15); border-radius: 6px; padding: 0.5rem 0.85rem; display: inline-block; }
+
+    /* JETSON HARDWARE CARD */
+    .jetson-card { margin: 1.5rem 2rem; background: rgba(37,99,235,0.06); border: 1px solid rgba(59,130,246,0.2); border-radius: 12px; padding: 1.25rem; }
+    .jetson-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-light); margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.4rem; }
+    .jetson-label::before { content: "⬛"; font-size: 0.7rem; }
+    .jetson-model { font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: 0.75rem; }
+    .jetson-specs { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+    .spec-item { display: flex; flex-direction: column; }
+    .spec-key { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+    .spec-val { font-size: 0.875rem; font-weight: 600; color: var(--text); }
+    .spec-val.highlight { color: var(--green); }
+    .spec-val.amber { color: var(--amber); }
+
+    /* FEATURE SECTIONS */
+    .feature-section { padding: 0 2rem; }
+    .feature-section + .feature-section { border-top: 1px solid var(--border); }
+    .feature-section-title {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--muted); padding: 1.1rem 0 0.75rem;
+    }
+    .feature-list { list-style: none; padding-bottom: 1.25rem; }
+    .feature-list li { font-size: 0.875rem; color: var(--text); padding: 0.35rem 0; display: flex; gap: 0.6rem; align-items: flex-start; line-height: 1.45; }
+    .feature-list li .check { color: var(--green); flex-shrink: 0; font-weight: 700; margin-top: 0.05rem; }
+    .feature-list li .cross { color: #4b5563; flex-shrink: 0; }
+    .feature-list li .tag {
+      font-size: 0.68rem; font-weight: 700; padding: 0.1rem 0.45rem;
+      border-radius: 4px; flex-shrink: 0; margin-top: 0.1rem; letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .tag-incl { background: rgba(34,197,94,0.1); color: var(--green); border: 1px solid rgba(34,197,94,0.2); }
+    .tag-new { background: rgba(37,99,235,0.1); color: var(--accent-light); border: 1px solid rgba(59,130,246,0.2); }
+    .tag-mo { background: rgba(245,158,11,0.1); color: var(--amber); border: 1px solid rgba(245,158,11,0.2); }
+
+    /* COMPARE CTA */
+    .compare-cta { padding: 1.75rem 2rem 2rem; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 0.75rem; }
+    .compare-col.featured .compare-cta { border-top-color: rgba(37,99,235,0.3); }
+    .compare-cta .btn-primary, .compare-cta .btn-secondary, .compare-cta .btn-green { width: 100%; text-align: center; display: block; }
+    .support-nudge { font-size: 0.8rem; color: var(--muted); text-align: center; padding-top: 0.25rem; }
+    .support-nudge a { color: var(--accent-light); font-weight: 600; }
+
+    /* COMPARISON TABLE */
+    .compare-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    .compare-table th {
+      font-size: 0.825rem; font-weight: 700; color: var(--white);
+      padding: 1rem 1.25rem; text-align: left; background: var(--card);
+      border-bottom: 2px solid var(--border);
+    }
+    .compare-table th:first-child { width: 36%; color: var(--muted); font-weight: 600; }
+    .compare-table th.featured-col { background: linear-gradient(to bottom, rgba(37,99,235,0.12), rgba(37,99,235,0.06)); color: var(--accent-light); }
+    .compare-table td {
+      padding: 0.75rem 1.25rem; border-bottom: 1px solid var(--border); vertical-align: top;
+    }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table tr:hover td { background: rgba(255,255,255,0.02); }
+    .compare-table td:first-child { color: var(--muted); font-size: 0.875rem; }
+    .compare-table td.featured-col { background: rgba(37,99,235,0.04); }
+    .compare-table .section-row td { background: var(--card-alt); font-weight: 700; color: var(--muted); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.6rem 1.25rem; }
+    .check-y { color: var(--green); font-weight: 700; }
+    .check-n { color: #374151; }
+    .check-p { color: var(--accent-light); font-weight: 600; font-size: 0.85rem; }
+    .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; }
+
+    /* KNOWLEDGE PLATFORM */
+    .knowledge-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; }
+    .knowledge-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.75rem; }
+    .knowledge-card .k-icon { font-size: 1.5rem; margin-bottom: 0.75rem; }
+    .knowledge-card h4 { font-size: 0.95rem; font-weight: 700; color: var(--white); margin-bottom: 0.5rem; }
+    .knowledge-card p { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
+    .knowledge-card .k-tag { display: inline-block; font-size: 0.7rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 4px; margin-top: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(37,99,235,0.1); color: var(--accent-light); border: 1px solid rgba(59,130,246,0.2); }
+
+    /* SUPPORT SECTION */
+    .support-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+    .support-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; position: relative; }
+    .support-card.featured { border-color: var(--accent); background: linear-gradient(135deg, #16191f 0%, #111b2e 100%); }
+    .support-card .s-tier { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-light); margin-bottom: 0.6rem; }
+    .support-card .s-price { font-size: 2rem; font-weight: 800; color: var(--white); letter-spacing: -0.02em; margin-bottom: 0.25rem; }
+    .support-card .s-price span { font-size: 0.9rem; font-weight: 500; color: var(--muted); }
+    .support-card .s-desc { font-size: 0.875rem; color: var(--muted); margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+    .support-list { list-style: none; margin-bottom: 1.5rem; }
+    .support-list li { font-size: 0.875rem; color: var(--text); padding: 0.35rem 0; display: flex; gap: 0.6rem; }
+    .support-list li::before { content: "✓"; color: var(--accent-light); font-weight: 700; flex-shrink: 0; }
+
+    /* REPO / FINE-TUNING */
+    .repo-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 2.5rem; max-width: 760px; }
+    .repo-steps { display: flex; flex-direction: column; gap: 1.25rem; margin-top: 1.75rem; }
+    .repo-step { display: flex; gap: 1.25rem; align-items: flex-start; }
+    .repo-step-num { background: rgba(37,99,235,0.12); border: 1px solid rgba(59,130,246,0.25); color: var(--accent-light); font-weight: 800; font-size: 0.875rem; width: 2rem; height: 2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 0.1rem; }
+    .repo-step h4 { font-size: 0.95rem; font-weight: 700; color: var(--white); margin-bottom: 0.25rem; }
+    .repo-step p { font-size: 0.875rem; color: var(--muted); line-height: 1.55; }
+
+    /* CTA BANNER */
+    .cta-banner { background: linear-gradient(135deg, #111b2e 0%, #0a0a0a 100%); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .cta-banner .section-inner { text-align: center; }
+    .cta-banner h2 { font-size: clamp(1.75rem, 3.5vw, 2.5rem); font-weight: 800; color: var(--white); letter-spacing: -0.02em; margin-bottom: 1rem; }
+    .cta-banner p { color: var(--muted); margin-bottom: 2rem; }
+    .cta-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+    /* FOOTER */
+    footer { padding: 2rem; text-align: center; color: var(--muted); font-size: 0.825rem; border-top: 1px solid var(--border); }
+    footer a { color: var(--accent-light); }
+
+    @media (max-width: 640px) {
+      nav .nav-links { display: none; }
+      .jetson-specs { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Protime <span>Consulting</span></div>
+  <div class="nav-links">
+    <a href="index.html">Overview</a>
+    <a href="openclaw-comparison.html" style="color:var(--text);">Comparison</a>
+    <a href="https://screenai.tailff380a.ts.net/checkout/">Checkout</a>
+    <a href="mailto:info@protimeconsulting.com">Contact</a>
+  </div>
+  <a href="https://screenai.tailff380a.ts.net/checkout/" class="nav-cta">Get Started</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">Full Platform Comparison</div>
+  <h1>Not Just Hardware.<br /><em>A Persistent AI Knowledge Platform.</em></h1>
+  <p>See exactly what you get in each package — hardware specs, agent configuration, knowledge infrastructure, and the service layer that keeps it performing.</p>
+</div>
+
+<!-- WHAT IS OPENCLAW (PLATFORM POSITIONING) -->
+<section style="padding-top: 0;">
+  <div class="section-inner">
+    <div class="section-label">What You're Actually Buying</div>
+    <div class="section-title">OpenClaw is an operating system for your business intelligence.</div>
+    <p class="section-sub">The hardware is the vessel. The platform is what matters — a persistent, memory-driven, multi-agent AI system that learns your business and runs it 24/7.</p>
+    <div class="platform-grid">
+      <div class="platform-card">
+        <div class="p-icon">🧠</div>
+        <h4>Persistent Memory & Knowledge</h4>
+        <p>Every decision, every brief, every finding is written to structured memory. Your agents remember what happened and why — across sessions, across weeks.</p>
+        <div style="font-size:0.75rem;color:var(--accent-light);margin-top:0.75rem;font-weight:600;">Not cloud-dependent. Lives on your hardware.</div>
+      </div>
+      <div class="platform-card">
+        <div class="p-icon">🔄</div>
+        <h4>Multi-Model LLM Routing</h4>
+        <p>Tasks are automatically routed to the right model — powerful reasoning for strategic output, efficient models for mechanical tasks. Cuts AI costs 40–60% vs naive setups.</p>
+        <div style="font-size:0.75rem;color:var(--accent-light);margin-top:0.75rem;font-weight:600;">4-tier routing stack. Fully configured for you.</div>
+      </div>
+      <div class="platform-card">
+        <div class="p-icon">🏗️</div>
+        <h4>Role-Specific Sub-Agents</h4>
+        <p>Each agent has a defined identity, operating rules, scope, and memory context. They don't just answer questions — they run workstreams.</p>
+        <div style="font-size:0.75rem;color:var(--accent-light);margin-top:0.75rem;font-weight:600;">Custom-built for your actual workflows.</div>
+      </div>
+      <div class="platform-card">
+        <div class="p-icon">📡</div>
+        <h4>Integration Fabric</h4>
+        <p>Connects to your real stack — email, calendar, M365, LinkedIn, CRM, webhooks. Agents act on information from your actual business systems.</p>
+        <div style="font-size:0.75rem;color:var(--accent-light);margin-top:0.75rem;font-weight:600;">Configured, tested, and maintained by us.</div>
+      </div>
+      <div class="platform-card">
+        <div class="p-icon">🔐</div>
+        <h4>Data Sovereignty</h4>
+        <p>Your knowledge stays on your hardware. Credentials, memory files, and business context are never stored on third-party platforms without your control.</p>
+        <div style="font-size:0.75rem;color:var(--accent-light);margin-top:0.75rem;font-weight:600;">chmod 600. Gitignored. Yours.</div>
+      </div>
+      <div class="platform-card">
+        <div class="p-icon">📦</div>
+        <h4>Remote Backup & Fine-Tuning</h4>
+        <p>All agent configs, identity files, and skills are version-controlled in a private remote repository. Restore in minutes after any hardware failure. Iterate without losing history.</p>
+        <div style="font-size:0.75rem;color:var(--accent-light);margin-top:0.75rem;font-weight:600;">Git-backed. Managed by Protime on support plans.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PACKAGE COMPARISON CARDS -->
+<section style="padding-top: 0;" id="packages">
+  <div class="section-inner">
+    <div class="section-label">Package Comparison</div>
+    <div class="section-title">Choose your intelligence tier.</div>
+    <p class="section-sub">Both packages include dedicated setup, hardware configuration, and a working system delivered in 5–8 business days. The difference is scope, agent depth, and what runs on day one.</p>
+
+    <div class="compare-wrap">
+
+      <!-- STARTER -->
+      <div class="compare-col">
+        <div class="compare-header">
+          <div class="compare-tier">Package 1</div>
+          <div class="compare-name">Starter</div>
+          <div class="compare-price">$999 <span>one-time</span></div>
+          <div class="compare-tagline">1 sub-agent · optimization · security hardening</div>
+          <div class="compare-payment">$249 deposit · then 3 × $250/mo · total $999</div>
+        </div>
+
+        <!-- JETSON HARDWARE -->
+        <div class="jetson-card">
+          <div class="jetson-label">NVIDIA Jetson — Recommended Platform</div>
+          <div class="jetson-model">Jetson Orin Nano 8GB</div>
+          <div class="jetson-specs">
+            <div class="spec-item"><span class="spec-key">AI Compute</span><span class="spec-val highlight">40 TOPS</span></div>
+            <div class="spec-item"><span class="spec-key">Memory</span><span class="spec-val">8GB Unified</span></div>
+            <div class="spec-item"><span class="spec-key">GPU Cores</span><span class="spec-val">1024 CUDA (Ampere)</span></div>
+            <div class="spec-item"><span class="spec-key">CPU</span><span class="spec-val">6-Core ARM A78AE</span></div>
+            <div class="spec-item"><span class="spec-key">Power Draw</span><span class="spec-val">7–15W continuous</span></div>
+            <div class="spec-item"><span class="spec-key">Local LLM</span><span class="spec-val">Up to 7B params</span></div>
+            <div class="spec-item"><span class="spec-key">Agent Capacity</span><span class="spec-val">1–2 concurrent agents</span></div>
+            <div class="spec-item"><span class="spec-key">Storage</span><span class="spec-val">NVMe SSD (client)</span></div>
+          </div>
+          <div style="margin-top:0.85rem;font-size:0.8rem;color:var(--muted);">Purpose-built AI edge platform. Runs OpenClaw and local inference 24/7. Not a consumer laptop — dedicated AI compute that lives in your office.</div>
+        </div>
+
+        <div class="feature-section">
+          <div class="feature-section-title">Platform Setup</div>
+          <ul class="feature-list">
+            <li><span class="check">✓</span> OpenClaw installation & gateway configuration</li>
+            <li><span class="check">✓</span> Tailscale remote access tunnel</li>
+            <li><span class="check">✓</span> Security hardening (SSH, firewall, credential vault)</li>
+            <li><span class="check">✓</span> Environment & secrets management (.env, chmod 600)</li>
+            <li><span class="check">✓</span> Jetson Orin Nano OS + NVIDIA JetPack optimization</li>
+          </ul>
+        </div>
+
+        <div class="feature-section">
+          <div class="feature-section-title">Agent Configuration</div>
+          <ul class="feature-list">
+            <li><span class="check">✓</span> <strong>1 custom sub-agent</strong> — role-defined, identity files authored</li>
+            <li><span class="check">✓</span> SOUL.md + AGENTS.md + USER.md authored</li>
+            <li><span class="check">✓</span> 3 custom skills built and deployed</li>
+            <li><span class="check">✓</span> Basic LLM routing (2-tier: fast / capable)</li>
+            <li><span class="check">✓</span> Persistent memory structure initialized</li>
+            <li><span class="cross">✗</span> Executive agent team</li>
+            <li><span class="cross">✗</span> Advanced 4-tier cost routing</li>
+          </ul>
+        </div>
+
+        <div class="feature-section">
+          <div class="feature-section-title">Knowledge Infrastructure</div>
+          <ul class="feature-list">
+            <li><span class="check">✓</span> Daily log memory system (YYYY-MM-DD.md)</li>
+            <li><span class="check">✓</span> Long-term MEMORY.md initialized</li>
+            <li><span class="check">✓</span> Pipeline tracking template</li>
+            <li><span class="check">✓</span> Workspace file structure (HEARTBEAT, SOUL, AGENTS)</li>
+            <li><span class="cross">✗</span> Remote backup repository</li>
+            <li><span class="cross">✗</span> Fine-tuning (1 month)</li>
+          </ul>
+        </div>
+
+        <div class="feature-section">
+          <div class="feature-section-title">Integrations</div>
+          <ul class="feature-list">
+            <li><span class="check">✓</span> AgentMail inbox (agent email identity)</li>
+            <li><span class="check">✓</span> Base connectors (calendar, email)</li>
+            <li><span class="check">✓</span> Web search integration (Brave API)</li>
+            <li><span class="cross">✗</span> M365 / Copilot / Teams</li>
+            <li><span class="cross">✗</span> LinkedIn API</li>
+            <li><span class="cross">✗</span> Webhook routing</li>
+          </ul>
+        </div>
+
+        <div class="feature-section">
+          <div class="feature-section-title">Delivery</div>
+          <ul class="feature-list">
+            <li><span class="check">✓</span> 1-hour live onboarding session</li>
+            <li><span class="check">✓</span> Documentation handoff</li>
+            <li><span class="check">✓</span> 5–8 business day delivery</li>
+          </ul>
+        </div>
+
+        <div class="compare-cta">
+          <a href="https://screenai.tailff380a.ts.net/checkout/" class="btn-secondary">Pay in Full — $999</a>
+          <a href="https://screenai.tailff380a.ts.net/checkout/" class="btn-ghost">Start for $249 →</a>
+          <a href="#support" class="btn-green">+ Add Monthly Support — $350/mo</a>
+          <div class="support-nudge">Support includes remote backup repo + proactive maintenance. <a href="#support">See plans →</a></div>
+        </div>
+      </div>
+
+      <!-- EXECUTIVE -->
+      <div class="compare-col featured">
+        <div class="compare-header">
+          <div class="featured-tag">Most Popular</div>
+          <div class="compare-tier">Package 2</div>
+          <div class="compare-name">Executive</div>
+          <div class="compare-price">$1,499 <span>one-time</span></div>
+          <div class="compare-tagline">3 executive agents · 1-mo fine-tuning · LLM routing · Agent Email</div>
+          <div class="compare-payment">$499 deposit · then 2 × $500/mo · total $1,499</div>
+        </div>
+
+        <!-- JETSON HARDWARE -->
+        <div class="jetson-card">
+          <div class="jetson-label">NVIDIA Jetson — Recommended Platform</div>
+          <div class="jetson-model">Jetson Orin NX 16GB</div>
+          <div class="jetson-specs">
+            <div class="spec-item"><span class="spec-key">AI Compute</span><span class="spec-val highlight">100 TOPS</span></div>
+            <div class="spec-item"><span class="spec-key">Memory</span><span class="spec-val">16GB Unified</span></div>
+            <div class="spec-item"><span class="spec-key">GPU Cores</span><span class="spec-val">1024 CUDA + 32 Tensor</span></div>
+            <div class="spec-item"><span class="spec-key">CPU</span><span class="spec-val">8-Core ARM A78AE</span></div>
+            <div class="spec-item"><span class="spec-key">Power Draw</span><span class="spec-val">10–25W continuous</span></div>
+            <div class="spec-item"><span class="spec-key">Local LLM</span><span class="spec-val amber">Up to 13B–34B params</span></div>
+            <div class="spec-item"><span class="spec-key">Agent Capacity</span><span class="spec-val">4+ concurrent agents</span></div>
+            <div class="spec-item"><span class="spec-key">Storage</span><span class="spec-val">NVMe SSD (client)</span></div>
+          </div>
+          <div style="margin-top:0.85rem;font-size:0.8rem;color:var(--muted);">2.5× the AI compute of Starter. Handles a full executive agent team running simultaneously — BD, marketing, finance, legal — with headroom for local inference and multi-model routing at scale.</div>
+        </div>
+
+        <div class="feature-section">
+          <div class="feature-section-title">Platform Setup</div>
+          <ul class="feature-list">
+            <li><span class="check">✓</span> Everything in Starter platform setup</li>
+            <li><span class="check">✓</span> Advanced security configuration (secrets vault, key rotation)</li>
+            <li><span class="check">✓</span> Jetson Orin NX OS + JetPack + CUDA optimization</li>
+            <li><span class="check">✓</span> Remote backup repository provisioned <span class="tag tag-new">Included</span></li>
+          </ul>
+        </div>
+
+        <div class="feature-section">
+          <div class="feature-section-title">Agent Configuration</div>
+          <ul class="feature-list">
+            <li><span class="check">✓</span> <strong>3 executive sub-agents</strong> — roles defined (CMO, CFO, CBO or custom)</li>
+            <li><span class="check">✓</span> Full identity files for all agents (SOUL, AGENTS, USER, MEMORY)</li>
+            <li><span class="check">✓</span> 6+ custom skills built and deployed</li>
+            <li><span class="check">✓</span> <strong>Advanced 4-tier LLM routing</strong> — cost-optimized dispatch <span class="tag tag-new">Included</span></li>
+            <li><span class="check">✓</span> CEO synthesis layer configured (Bluey-style orchestration)</li>
+            <li><span class="check">✓</span> Cron schedule: heartbeats, sweeps, weekly briefs</li>
+          </ul>
+        </div>
+
+        <div class="feature-section">
+          <div class="feature-section-title">Knowledge Infrastructure</div>
+          <ul class="feature-list">
+            <li><span class="check">✓</span> Everything in Starter knowledge infrastructure</li>
+            <li><span class="check">✓</span> Full pipeline tracking system (pipeline.md)</li>
+            <li><span class="check">✓</span> Opportunity scoring templates</li>
+            <li><span class="check">✓</span> <strong>Remote backup repository</strong> — all configs version-controlled <span class="tag tag-new">Included</span></li>
+            <li><span class="check">✓</span> <strong>1 month fine-tuning</strong> — prompts, routing, and skill iteration <span class="tag tag-mo">1 Month</span></li>
+            <li><span class="check">✓</span> MEMORY.md long-term intelligence curation</li>
+          </ul>
+        </div>
+
+        <div class="feature-section">
+          <div class="feature-section-title">Integrations</div>
+          <ul class="feature-list">
+            <li><span class="check">✓</span> <strong>AgentMail</strong> — dedicated agent email inboxes (send/receive) <span class="tag tag-new">Included</span></li>
+            <li><span class="check">✓</span> M365 / Copilot / Teams integration</li>
+            <li><span class="check">✓</span> LinkedIn API (posting, outreach)</li>
+            <li><span class="check">✓</span> Webhook routing & external API connectors</li>
+            <li><span class="check">✓</span> Web search, calendar, CRM pipelines</li>
+            <li><span class="check">✓</span> Tailscale remote access + cloud relay</li>
+          </ul>
+        </div>
+
+        <div class="feature-section">
+          <div class="feature-section-title">Delivery</div>
+          <ul class="feature-list">
+            <li><span class="check">✓</span> 2-hour live onboarding session</li>
+            <li><span class="check">✓</span> Full documentation handoff</li>
+            <li><span class="check">✓</span> 5–8 business day delivery</li>
+            <li><span class="check">✓</span> 60-day onboarding support window</li>
+          </ul>
+        </div>
+
+        <div class="compare-cta">
+          <a href="https://screenai.tailff380a.ts.net/checkout/" class="btn-primary">Pay in Full — $1,499</a>
+          <a href="https://screenai.tailff380a.ts.net/checkout/" class="btn-ghost">Start for $499 →</a>
+          <a href="#support" class="btn-green">+ Add Monthly Support — $500/mo</a>
+          <div class="support-nudge">Executive support includes remote repo management + fine-tuning cycles. <a href="#support">See plans →</a></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FULL COMPARISON TABLE -->
+<section style="padding-top:0;">
+  <div class="section-inner">
+    <div class="section-label">Side-by-Side</div>
+    <div class="section-title">Every data point, compared.</div>
+    <p class="section-sub">No ambiguity. Every feature, every spec, every capability — clearly mapped to each package.</p>
+    <div class="table-wrap">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Feature / Capability</th>
+            <th>Starter — $999</th>
+            <th class="featured-col">Executive — $1,499</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- HARDWARE -->
+          <tr class="section-row"><td colspan="3">Hardware Platform (NVIDIA Jetson)</td></tr>
+          <tr><td>Recommended Model</td><td>Jetson Orin Nano 8GB</td><td class="featured-col">Jetson Orin NX 16GB</td></tr>
+          <tr><td>AI Compute (TOPS)</td><td>40 TOPS</td><td class="featured-col">100 TOPS</td></tr>
+          <tr><td>Unified Memory</td><td>8GB</td><td class="featured-col">16GB</td></tr>
+          <tr><td>GPU Architecture</td><td>1024-core Ampere</td><td class="featured-col">1024-core Ampere + 32 Tensor Cores</td></tr>
+          <tr><td>CPU Cores</td><td>6-core ARM A78AE</td><td class="featured-col">8-core ARM A78AE</td></tr>
+          <tr><td>Max Power Draw</td><td>15W</td><td class="featured-col">25W</td></tr>
+          <tr><td>Local LLM Capability</td><td>Up to 7B parameters</td><td class="featured-col">Up to 13B–34B parameters</td></tr>
+          <tr><td>Concurrent Agent Capacity</td><td>1–2 agents</td><td class="featured-col">4+ agents</td></tr>
+          <tr><td>24/7 Operation</td><td><span class="check-y">✓</span></td><td class="featured-col"><span class="check-y">✓</span></td></tr>
+
+          <!-- PLATFORM -->
+          <tr class="section-row"><td colspan="3">OpenClaw Platform</td></tr>
+          <tr><td>OpenClaw Installation</td><td><span class="check-y">✓</span></td><td class="featured-col"><span class="check-y">✓</span></td></tr>
+          <tr><td>Gateway Configuration</td><td><span class="check-y">✓</span></td><td class="featured-col"><span class="check-y">✓</span></td></tr>
+          <tr><td>Tailscale Remote Access</td><td><span class="check-y">✓</span></td><td class="featured-col"><span class="check-y">✓</span></td></tr>
+          <tr><td>Security Hardening</td><td>Base (SSH, firewall, env)</td><td class="featured-col">Advanced (vault, key rotation)</td></tr>
+          <tr><td>JetPack / CUDA Optimization</td><td><span class="check-y">✓</span></td><td class="featured-col"><span class="check-y">✓ Enhanced</span></td></tr>
+
+          <!-- AGENTS -->
+          <tr class="section-row"><td colspan="3">Agent Configuration</td></tr>
+          <tr><td>Number of Sub-Agents</td><td><span class="check-p">1 custom agent</span></td><td class="featured-col"><span class="check-p">3 executive agents</span></td></tr>
+          <tr><td>Agent Identity Files (SOUL / AGENTS / USER)</td><td><span class="check-y">✓</span></td><td class="featured-col"><span class="check-y">✓ Full suite</span></td></tr>
+          <tr><td>Custom Skills Built</td><td>3 skills</td><td class="featured-col">6+ skills</td></tr>
+          <tr><td>CEO / Orchestration Layer</td><td><span class="check-n">—</span></td><td class="featured-col"><span class="check-y">✓ Configured</span></td></tr>
+          <tr><td>Cron Scheduling (heartbeats, sweeps)</td><td>Basic</td><td class="featured-col">Full schedule</td></tr>
+          <tr><td>LLM Routing</td><td>2-tier (fast / capable)</td><td class="featured-col">4-tier cost-optimized</td></tr>
+
+          <!-- KNOWLEDGE -->
+          <tr class="section-row"><td colspan="3">Knowledge Infrastructure</td></tr>
+          <tr><td>Persistent Memory System</td><td><span class="check-y">✓</span></td><td class="featured-col"><span class="check-y">✓</span></td></tr>
+          <tr><td>Daily Log Files (YYYY-MM-DD.md)</td><td><span class="check-y">✓</span></td><td class="featured-col"><span class="check-y">✓</span></td></tr>
+          <tr><td>Long-Term MEMORY.md</td><td>Basic</td><td class="featured-col">Full (curated by agents)</td></tr>
+          <tr><td>Pipeline / Opportunity Tracking</td><td>Template only</td><td class="featured-col">Fully configured</td></tr>
+          <tr><td>Remote Backup Repository</td><td><span class="check-n">— (add w/ support)</span></td><td class="featured-col"><span class="check-y">✓ Included</span></td></tr>
+          <tr><td>Fine-Tuning (prompts, routing, skills)</td><td><span class="check-n">—</span></td><td class="featured-col"><span class="check-y">✓ 1 month included</span></td></tr>
+
+          <!-- INTEGRATIONS -->
+          <tr class="section-row"><td colspan="3">Integrations</td></tr>
+          <tr><td>AgentMail (Agent Email Inboxes)</td><td>1 inbox</td><td class="featured-col"><span class="check-y">✓ Full setup (send/receive)</span></td></tr>
+          <tr><td>Web Search (Brave API)</td><td><span class="check-y">✓</span></td><td class="featured-col"><span class="check-y">✓</span></td></tr>
+          <tr><td>Calendar / Email Base Connectors</td><td><span class="check-y">✓</span></td><td class="featured-col"><span class="check-y">✓</span></td></tr>
+          <tr><td>Microsoft 365 / Copilot / Teams</td><td><span class="check-n">—</span></td><td class="featured-col"><span class="check-y">✓</span></td></tr>
+          <tr><td>LinkedIn API</td><td><span class="check-n">—</span></td><td class="featured-col"><span class="check-y">✓</span></td></tr>
+          <tr><td>Webhook Routing</td><td><span class="check-n">—</span></td><td class="featured-col"><span class="check-y">✓</span></td></tr>
+          <tr><td>Custom API Integrations</td><td><span class="check-n">—</span></td><td class="featured-col"><span class="check-y">✓</span></td></tr>
+
+          <!-- DELIVERY -->
+          <tr class="section-row"><td colspan="3">Delivery & Onboarding</td></tr>
+          <tr><td>Delivery Time</td><td>5–8 business days</td><td class="featured-col">5–8 business days</td></tr>
+          <tr><td>Live Onboarding Session</td><td>1 hour</td><td class="featured-col">2 hours</td></tr>
+          <tr><td>Documentation Handoff</td><td><span class="check-y">✓</span></td><td class="featured-col"><span class="check-y">✓ Full</span></td></tr>
+          <tr><td>Post-Launch Support Window</td><td><span class="check-n">—</span></td><td class="featured-col">60 days</td></tr>
+          <tr><td>Payment Plan</td><td>$249 + 3 × $250/mo</td><td class="featured-col">$499 + 2 × $500/mo</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- KNOWLEDGE PLATFORM — NOT JUST HARDWARE -->
+<section style="padding-top:0;">
+  <div class="section-inner">
+    <div class="section-label">The Knowledge Layer</div>
+    <div class="section-title">Hardware enables it. Knowledge is what compounds.</div>
+    <p class="section-sub">The Jetson is the compute substrate. What you're actually building is a living, learning intelligence infrastructure — one that gets smarter about your business over time.</p>
+    <div class="knowledge-grid">
+      <div class="knowledge-card">
+        <div class="k-icon">📝</div>
+        <h4>Structured Memory Files</h4>
+        <p>Your agents write to structured Markdown files — daily logs, pipeline tracking, long-term intelligence, lessons learned. Every session builds on the last. No knowledge dies between restarts.</p>
+        <div class="k-tag">Both Packages</div>
+      </div>
+      <div class="knowledge-card">
+        <div class="k-icon">🔀</div>
+        <h4>LLM Routing as Cost Intelligence</h4>
+        <p>The 4-tier routing engine isn't just about cost — it's about right-sizing reasoning to task type. Strategic output gets the best model. Mechanical extraction gets the fastest. You get both quality and efficiency.</p>
+        <div class="k-tag">Executive Package</div>
+      </div>
+      <div class="knowledge-card">
+        <div class="k-icon">📬</div>
+        <h4>AgentMail — Agent-Native Email Identity</h4>
+        <p>Each agent gets a real email inbox it can send from, receive into, and act on — without touching your personal email. Outreach goes from a named agent identity, not you personally.</p>
+        <div class="k-tag">Executive Package</div>
+      </div>
+      <div class="knowledge-card">
+        <div class="k-icon">🗂️</div>
+        <h4>Remote Backup Repository</h4>
+        <p>All SOUL.md, AGENTS.md, skill files, and configurations are version-controlled in a private remote repo. Hardware failure doesn't mean starting over. Every improvement is preserved and restorable.</p>
+        <div class="k-tag">Executive + Support Plans</div>
+      </div>
+      <div class="knowledge-card">
+        <div class="k-icon">🧪</div>
+        <h4>Fine-Tuning Cycles</h4>
+        <p>AI systems drift and improve. Fine-tuning means systematically revisiting prompts, routing rules, agent personas, and skill logic after real usage reveals what works and what doesn't.</p>
+        <div class="k-tag">Executive Package (1 Month)</div>
+      </div>
+      <div class="knowledge-card">
+        <div class="k-icon">🔐</div>
+        <h4>Credential & Secrets Architecture</h4>
+        <p>Every API key, OAuth token, and secret lives in a properly structured .env file — chmod 600, gitignored, never in code. Token rotation reminders built into agent memory. Not an afterthought.</p>
+        <div class="k-tag">Both Packages</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REMOTE BACKUP + FINE-TUNING DETAIL -->
+<section style="padding-top:0;" id="backup">
+  <div class="section-inner">
+    <div class="section-label">Remote Backup & Fine-Tuning</div>
+    <div class="section-title">Your AI platform, protected and evolving.</div>
+    <p class="section-sub">Most setup services hand off the hardware and disappear. We build a version-controlled foundation for iterative improvement — so your system gets better over time, and survives anything.</p>
+    <div class="repo-card">
+      <div class="repo-steps">
+        <div class="repo-step">
+          <div class="repo-step-num">1</div>
+          <div>
+            <h4>Initial Commit — Full Workspace Snapshot</h4>
+            <p>At delivery, your entire workspace is committed to a private remote repository — all agent files, identity configs, skills, and memory structure. This is your baseline. Clean, documented, tagged.</p>
+          </div>
+        </div>
+        <div class="repo-step">
+          <div class="repo-step-num">2</div>
+          <div>
+            <h4>Usage-Driven Observation</h4>
+            <p>During the fine-tuning period (included in Executive, ongoing with support plans), we observe how your agents actually perform — what outputs hit, what prompts drift, where routing is suboptimal.</p>
+          </div>
+        </div>
+        <div class="repo-step">
+          <div class="repo-step-num">3</div>
+          <div>
+            <h4>Iterative Refinement</h4>
+            <p>Skills are sharpened. Prompts are tightened. LLM routing tiers are adjusted. Agent identity files are updated to reflect what's working. Every change is committed — fully auditable, fully reversible.</p>
+          </div>
+        </div>
+        <div class="repo-step">
+          <div class="repo-step-num">4</div>
+          <div>
+            <h4>Disaster Recovery — Restore in Minutes</h4>
+            <p>If hardware fails, gets replaced, or you migrate to a new machine — a full restore takes minutes. Clone the repo, run the setup, reinstate secrets. Your business intelligence is never trapped on one device.</p>
+          </div>
+        </div>
+        <div class="repo-step">
+          <div class="repo-step-num">5</div>
+          <div>
+            <h4>Ongoing via Support Plans</h4>
+            <p>With an active support plan, the remote repository remains managed by Protime. Updates are pushed on every maintenance cycle. Your knowledge platform compounds indefinitely.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SUPPORT PLANS -->
+<section style="padding-top:0;" id="support">
+  <div class="section-inner">
+    <div class="section-label">Ongoing Support Plans</div>
+    <div class="section-title">The service layer that makes it a long-term asset.</div>
+    <p class="section-sub">A one-time setup gives you a working system. A support plan turns it into a managed, compounding intelligence platform — maintained, optimized, and backed up by us every month.</p>
+    <div class="support-grid">
+
+      <div class="support-card">
+        <div class="s-tier">Support — Starter</div>
+        <div class="s-price">$350 <span>/ month</span></div>
+        <div class="s-desc">For Starter clients. Keeps your system healthy, current, and protected.</div>
+        <ul class="support-list">
+          <li>Monthly system health check & audit</li>
+          <li>Platform updates & dependency management</li>
+          <li>LLM prompt refresh & routing optimization</li>
+          <li>Up to 2 skill / agent changes per month</li>
+          <li><strong>Remote backup repository</strong> — provisioned & managed</li>
+          <li>Priority support response</li>
+          <li>Security: token rotation reminders & key hygiene</li>
+        </ul>
+        <a href="https://screenai.tailff380a.ts.net/checkout/" class="btn-secondary" style="display:block;text-align:center;">Subscribe — $350/mo →</a>
+      </div>
+
+      <div class="support-card featured">
+        <div class="s-tier">Support — Executive</div>
+        <div class="s-price">$500 <span>/ month</span></div>
+        <div class="s-desc">Full AI operations management for Executive clients. Your system, actively driven forward.</div>
+        <ul class="support-list">
+          <li>Everything in Starter support</li>
+          <li>Monthly strategy sync call (30 min)</li>
+          <li>M365 / Copilot integration monitoring & tuning</li>
+          <li>Advanced 4-tier routing cost review & adjustment</li>
+          <li><strong>Remote backup repo</strong> — monthly snapshot + tagging</li>
+          <li><strong>Fine-tuning cycles</strong> — prompts, routing, skill iteration</li>
+          <li>AgentMail deliverability monitoring</li>
+          <li>Agent performance review & reporting</li>
+          <li>Priority SLA + roadmap recommendations</li>
+        </ul>
+        <a href="https://screenai.tailff380a.ts.net/checkout/" class="btn-primary" style="display:block;text-align:center;">Subscribe — $500/mo →</a>
+      </div>
+
+      <div class="support-card">
+        <div class="s-tier">Cloud Hosting Add-on</div>
+        <div class="s-price">$49 <span>/ month</span></div>
+        <div class="s-desc">Protime-managed cloud relay for remote access. No hardware headaches.</div>
+        <ul class="support-list">
+          <li>Dedicated cloud server provisioned by us</li>
+          <li>Monitoring, snapshots & automated backups</li>
+          <li>Remote access management (Tailscale relay)</li>
+          <li>99.99% uptime infrastructure</li>
+          <li>Works with either package</li>
+        </ul>
+        <a href="https://screenai.tailff380a.ts.net/checkout/" class="btn-secondary" style="display:block;text-align:center;">Add Hosting →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<section class="cta-banner">
+  <div class="section-inner">
+    <h2>Pick Your Package. We'll Handle Everything Else.</h2>
+    <p>5–8 business days from deposit to working system. No guesswork, no DIY rabbit holes.<br />A knowledge platform that runs your business — built and backed by enterprise AI specialists.</p>
+    <div class="cta-actions">
+      <a href="https://screenai.tailff380a.ts.net/checkout/" class="btn-primary">Start Starter — $249 Deposit →</a>
+      <a href="https://screenai.tailff380a.ts.net/checkout/" class="btn-secondary">Start Executive — $499 Deposit →</a>
+    </div>
+    <p style="margin-top:1.5rem;font-size:0.875rem;color:var(--muted);">Questions? <a href="mailto:info@protimeconsulting.com" style="color:var(--accent-light);">Book a 20-minute call →</a></p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Protime Consulting Inc. · Philadelphia, PA · <a href="https://protimeconsulting.com">protimeconsulting.com</a> · <a href="mailto:info@protimeconsulting.com">info@protimeconsulting.com</a></p>
+</footer>
+
+</body>
+</html>

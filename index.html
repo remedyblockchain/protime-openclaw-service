@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AI Agent Infrastructure for Business | Protime Consulting</title>
-  <meta name="description" content="Done-for-you AI agent infrastructure. Custom skills, sub-agents, integrations, and ongoing optimization — built and managed by enterprise AI specialists." />
+  <meta name="description" content="Done-for-you AI agent infrastructure on NVIDIA Jetson. Custom skills, sub-agents, integrations, and ongoing optimization — built and managed by enterprise AI specialists." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
@@ -117,16 +117,23 @@
     .pain-card p { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
 
     /* HARDWARE OPTIONS */
-    .hw-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
+    .hw-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
     .hw-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.75rem; }
     .hw-card .hw-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }
-    .hw-card h3 { font-size: 1.05rem; font-weight: 700; color: var(--white); margin-bottom: 0.75rem; }
+    .hw-card h3 { font-size: 1.05rem; font-weight: 700; color: var(--white); margin-bottom: 0.5rem; }
+    .hw-card .hw-sub { font-size: 0.8rem; color: var(--muted); margin-bottom: 0.85rem; }
     .hw-card ul { list-style: none; }
     .hw-card ul li { font-size: 0.875rem; color: var(--muted); padding: 0.3rem 0; display: flex; gap: 0.5rem; }
     .hw-card ul li::before { content: "→"; color: var(--accent-light); flex-shrink: 0; }
     .hw-badge { display: inline-block; font-size: 0.7rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 4px; margin-top: 1rem; text-transform: uppercase; letter-spacing: 0.06em; }
     .hw-badge.local { background: rgba(34,197,94,0.12); color: var(--green); border: 1px solid rgba(34,197,94,0.2); }
     .hw-badge.cloud { background: rgba(37,99,235,0.12); color: var(--accent-light); border: 1px solid rgba(59,130,246,0.2); }
+    /* JETSON SPECS MINI-TABLE */
+    .jetson-specs { display: grid; grid-template-columns: 1fr 1fr; gap: 0.35rem 0.75rem; margin: 0.75rem 0; }
+    .spec-item { display: flex; flex-direction: column; }
+    .spec-key { font-size: 0.67rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+    .spec-val { font-size: 0.82rem; font-weight: 600; color: var(--text); }
+    .spec-val.green { color: var(--green); }
 
     /* PRICING */
     .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; align-items: start; }
@@ -191,10 +198,11 @@
   <div class="nav-links">
     <a href="#how-it-works">How It Works</a>
     <a href="#pricing">Pricing</a>
+    <a href="openclaw-comparison.html">Compare Packages</a>
     <a href="#addons">Add-ons</a>
     <a href="mailto:info@protimeconsulting.com">Contact</a>
   </div>
-  <a href="checkout.html" class="nav-cta">Get Started</a>
+  <a href="https://screenai.tailff380a.ts.net/checkout/" class="nav-cta">Get Started</a>
 </nav>
 
 <!-- HERO -->
@@ -203,8 +211,8 @@
   <h1>Your Business, Running on AI Agents —<br /><em>Configured and Ready in a Week.</em></h1>
   <p>We install, configure, and deploy a custom AI agent system for your business. Not a chatbot. Not a generic tool. Agents built around how your business actually operates — and maintained so they stay that way.</p>
   <div class="hero-actions">
-    <a href="#pricing" class="btn-primary">See Pricing →</a>
-    <a href="mailto:info@protimeconsulting.com" class="btn-secondary">Book a Call</a>
+    <a href="#pricing" class="btn-primary">See Pricing — From $999 →</a>
+    <a href="openclaw-comparison.html" class="btn-secondary">Compare Packages</a>
   </div>
 </div>
 
@@ -292,47 +300,71 @@
 <!-- HARDWARE OPTIONS -->
 <section style="padding-top:0;">
   <div class="section-inner">
-    <div class="section-label">Deployment Options</div>
-    <div class="section-title">Local hardware or managed cloud — we support both.</div>
-    <p class="section-sub">Every client has different needs around data privacy, budget, and operational simplicity. Pick what fits your business.</p>
+    <div class="section-label">Deployment Platform — NVIDIA Jetson</div>
+    <div class="section-title">Purpose-built AI hardware. Not a laptop. Not a cloud VM.</div>
+    <p class="section-sub">Every package runs on NVIDIA Jetson — dedicated AI edge compute that lives in your office and runs 24/7. We configure the hardware, the OS, and the AI stack. You get a system that's always on and always yours.</p>
     <div class="hw-grid">
       <div class="hw-card">
-        <div class="hw-label">Option A</div>
-        <h3>Local Mini PC</h3>
+        <div class="hw-label">Package 1 — Starter Platform</div>
+        <h3>NVIDIA Jetson Orin Nano 8GB</h3>
+        <div class="hw-sub">Entry AI edge compute — capable, efficient, always-on.</div>
+        <div class="jetson-specs">
+          <div class="spec-item"><span class="spec-key">AI Compute</span><span class="spec-val green">40 TOPS</span></div>
+          <div class="spec-item"><span class="spec-key">Memory</span><span class="spec-val">8GB Unified</span></div>
+          <div class="spec-item"><span class="spec-key">GPU</span><span class="spec-val">1024-core Ampere</span></div>
+          <div class="spec-item"><span class="spec-key">CPU</span><span class="spec-val">6-Core ARM A78AE</span></div>
+          <div class="spec-item"><span class="spec-key">Power</span><span class="spec-val">7–15W continuous</span></div>
+          <div class="spec-item"><span class="spec-key">Local LLM</span><span class="spec-val">Up to 7B params</span></div>
+          <div class="spec-item"><span class="spec-key">Agents</span><span class="spec-val">1–2 concurrent</span></div>
+          <div class="spec-item"><span class="spec-key">24/7 Operation</span><span class="spec-val green">✓</span></div>
+        </div>
         <ul>
-          <li>Runs on your premises — all data stays with you</li>
-          <li>Recommended: Intel N150, 16GB RAM, 512GB NVMe (~$165)</li>
-          <li>Silent, low power (~10W), 24/7 capable</li>
-          <li>Remote support via secure tunnel (Tailscale)</li>
-          <li>Zero monthly infrastructure cost</li>
+          <li>Runs OpenClaw + 1 custom sub-agent continuously</li>
+          <li>Fully configured OS (JetPack + CUDA)</li>
+          <li>All data stays on your hardware</li>
+          <li>Remote access via Tailscale tunnel</li>
         </ul>
-        <div class="hw-badge local">Best for: Privacy-first, regulated industries</div>
+        <div class="hw-badge local">Starter Package — $999</div>
+      </div>
+      <div class="hw-card" style="border-color: var(--accent); background: linear-gradient(160deg, #16191f 0%, #111b2e 100%);">
+        <div class="hw-label" style="color:var(--accent-light);">Package 2 — Executive Platform</div>
+        <h3>NVIDIA Jetson Orin NX 16GB</h3>
+        <div class="hw-sub">2.5× the AI compute. Built for a full executive agent team.</div>
+        <div class="jetson-specs">
+          <div class="spec-item"><span class="spec-key">AI Compute</span><span class="spec-val green">100 TOPS</span></div>
+          <div class="spec-item"><span class="spec-key">Memory</span><span class="spec-val">16GB Unified</span></div>
+          <div class="spec-item"><span class="spec-key">GPU</span><span class="spec-val">1024-core + 32 Tensor</span></div>
+          <div class="spec-item"><span class="spec-key">CPU</span><span class="spec-val">8-Core ARM A78AE</span></div>
+          <div class="spec-item"><span class="spec-key">Power</span><span class="spec-val">10–25W continuous</span></div>
+          <div class="spec-item"><span class="spec-key">Local LLM</span><span class="spec-val" style="color:var(--amber);">Up to 34B params</span></div>
+          <div class="spec-item"><span class="spec-key">Agents</span><span class="spec-val">4+ concurrent</span></div>
+          <div class="spec-item"><span class="spec-key">24/7 Operation</span><span class="spec-val green">✓</span></div>
+        </div>
+        <ul>
+          <li>Runs 3 executive agents simultaneously</li>
+          <li>Handles local inference + multi-model routing at scale</li>
+          <li>Full remote backup repository included</li>
+          <li>Remote access + cloud relay via Tailscale</li>
+        </ul>
+        <div class="hw-badge cloud">Executive Package — $1,499</div>
       </div>
       <div class="hw-card">
-        <div class="hw-label">Option B</div>
+        <div class="hw-label">Option C — Cloud Add-on</div>
         <h3>Managed Cloud Hosting</h3>
+        <div class="hw-sub">No hardware to buy. We provision and manage everything.</div>
         <ul>
-          <li>We provision and manage your dedicated cloud server</li>
+          <li>Dedicated cloud server provisioned by us</li>
           <li>No hardware to buy, stage, or maintain</li>
           <li>99.99% uptime SLA, automatic snapshots/backups</li>
-          <li>Ivan has full access for instant remote support</li>
-          <li>$49/mo add-on (we manage everything)</li>
+          <li>Remote access management included</li>
+          <li>$49/mo add-on — works with either package</li>
         </ul>
         <div class="hw-badge cloud">Best for: Most SMBs — simplest experience</div>
       </div>
-      <div class="hw-card">
-        <div class="hw-label">Option C</div>
-        <h3>Hybrid</h3>
-        <ul>
-          <li>Sensitive data stays local on your hardware</li>
-          <li>Lightweight cloud relay for remote access</li>
-          <li>Best of both: data sovereignty + remote support</li>
-          <li>Ideal for legal, financial, or healthcare contexts</li>
-          <li>Quoted per engagement based on requirements</li>
-        </ul>
-        <div class="hw-badge local">Best for: Regulated industries with remote teams</div>
-      </div>
     </div>
+    <p style="margin-top:1.5rem;font-size:0.875rem;color:var(--muted);text-align:center;">
+      Want the full hardware spec comparison? <a href="openclaw-comparison.html" style="color:var(--accent-light);font-weight:600;">See the full package breakdown →</a>
+    </p>
   </div>
 </section>
 
@@ -341,18 +373,20 @@
   <div class="section-inner">
     <div class="section-label">The Real Cost of DIY</div>
     <div class="section-title">Most owners spend 50+ hours and never finish.</div>
-    <p class="section-sub">Before you factor in the time, consider the probability of actually completing a production-ready setup. Most don't.</p>
+    <p class="section-sub">Before you factor in the time, consider the probability of actually completing a production-ready setup on NVIDIA Jetson with a full agent stack. Most don't.</p>
     <div class="calc-box">
-      <div class="calc-row"><span class="label">Research & hardware selection</span><span class="value">6–10 hrs</span></div>
-      <div class="calc-row"><span class="label">Install, gateway config, Node setup</span><span class="value">6–12 hrs</span></div>
+      <div class="calc-row"><span class="label">NVIDIA Jetson hardware research & sourcing</span><span class="value">4–8 hrs</span></div>
+      <div class="calc-row"><span class="label">JetPack OS + CUDA environment setup</span><span class="value">5–10 hrs</span></div>
+      <div class="calc-row"><span class="label">OpenClaw install, gateway config, Node</span><span class="value">6–12 hrs</span></div>
       <div class="calc-row"><span class="label">API integrations & OAuth flows</span><span class="value">5–8 hrs</span></div>
       <div class="calc-row"><span class="label">Agent identity & persona design</span><span class="value">4–6 hrs</span></div>
       <div class="calc-row"><span class="label">Custom skill authoring</span><span class="value">4–8 hrs</span></div>
       <div class="calc-row"><span class="label">LLM routing configuration</span><span class="value">3–5 hrs</span></div>
+      <div class="calc-row"><span class="label">Security hardening & secrets management</span><span class="value">2–4 hrs</span></div>
       <div class="calc-row"><span class="label">Testing, debugging, iteration</span><span class="value">8–15 hrs</span></div>
-      <div class="calc-row"><span class="label">Realistic total</span><span class="value">36–64 hrs</span></div>
-      <div class="calc-row highlight"><span class="label">Value of your time @ $150/hr</span><span class="value">$5,400 – $9,600</span></div>
-      <div class="calc-row highlight"><span class="label">Protime Starter setup</span><span class="value">$2,000</span></div>
+      <div class="calc-row"><span class="label">Realistic total</span><span class="value">41–76 hrs</span></div>
+      <div class="calc-row highlight"><span class="label">Value of your time @ $150/hr</span><span class="value">$6,150 – $11,400</span></div>
+      <div class="calc-row highlight"><span class="label">Protime Starter — done for you</span><span class="value">$999</span></div>
     </div>
   </div>
 </section>
@@ -362,52 +396,61 @@
   <div class="section-inner">
     <div class="section-label">Pricing</div>
     <div class="section-title">Two tiers. Flexible payment options.</div>
-    <p class="section-sub">Start with $500 down and pay over time — or pay in full and save. Both tiers include a personal build and onboarding.</p>
+    <p class="section-sub">Start with a deposit and pay over time — or pay in full. Both packages include a personal build on NVIDIA Jetson hardware, a working system, and a live onboarding session.</p>
     <div class="pricing-grid">
 
       <!-- STARTER -->
       <div class="pricing-card">
-        <div class="pricing-tier">Starter</div>
-        <div class="pricing-price">$2,000 <span>one-time</span></div>
-        <div class="pricing-desc">For solo operators and small service businesses. Full setup, delivered in 5–8 business days.</div>
+        <div class="pricing-tier">Starter — Package 1</div>
+        <div class="pricing-price">$999 <span>one-time</span></div>
+        <div class="pricing-desc">1 custom sub-agent · security hardening · optimization. Powered by Jetson Orin Nano 8GB (40 TOPS). Delivered in 5–8 business days.</div>
         <ul class="pricing-features">
-          <li>OpenClaw installation & configuration</li>
-          <li>Base connectors (email, calendar, CRM)</li>
+          <li>NVIDIA Jetson Orin Nano 8GB — configured & optimized</li>
+          <li>OpenClaw installation & gateway configuration</li>
+          <li>Security hardening (SSH, firewall, secrets vault)</li>
+          <li>1 custom sub-agent — role-defined, identity authored</li>
           <li>3 custom skills built & deployed</li>
-          <li>2 role-specific sub-agents</li>
-          <li>LLM model routing configured</li>
-          <li>1-hour onboarding session</li>
+          <li>2-tier LLM model routing</li>
+          <li>Base integrations (AgentMail inbox, web search, calendar)</li>
+          <li>Persistent memory & knowledge structure initialized</li>
+          <li>Tailscale remote access configured</li>
+          <li>1-hour live onboarding session</li>
           <li>Documentation handoff</li>
-          <li>Local or cloud deployment (your choice)</li>
         </ul>
         <div class="pricing-actions">
-          <a href="checkout.html" class="btn-secondary">Pay in Full — $2,000</a>
-          <a href="checkout.html" class="btn-ghost">Start for $500 →</a>
-          <div class="deposit-note">$500 deposit · then 3 × $500/mo · total $2,000</div>
+          <a href="https://screenai.tailff380a.ts.net/checkout/" class="btn-secondary">Pay in Full — $999</a>
+          <a href="https://screenai.tailff380a.ts.net/checkout/" class="btn-ghost">Start for $249 →</a>
+          <div class="deposit-note">$249 deposit · then 3 × $250/mo · total $999</div>
+          <a href="openclaw-comparison.html" style="display:block;text-align:center;font-size:0.825rem;color:var(--muted);margin-top:0.5rem;">+ Add monthly support for backup & maintenance →</a>
         </div>
       </div>
 
       <!-- EXECUTIVE -->
       <div class="pricing-card featured">
         <div class="featured-badge">Most Popular</div>
-        <div class="pricing-tier">Executive</div>
-        <div class="pricing-price">$3,500 <span>one-time</span></div>
-        <div class="pricing-desc">Full multi-agent AI operating system for established businesses running on Microsoft 365.</div>
+        <div class="pricing-tier">Executive — Package 2</div>
+        <div class="pricing-price">$1,499 <span>one-time</span></div>
+        <div class="pricing-desc">3 executive agents · 1-mo fine-tuning · 4-tier LLM routing · AgentMail. Powered by Jetson Orin NX 16GB (100 TOPS). Includes remote backup repo.</div>
         <ul class="pricing-features">
+          <li>NVIDIA Jetson Orin NX 16GB — configured & optimized (100 TOPS)</li>
           <li>Everything in Starter</li>
-          <li>Up to 5 agents with defined roles</li>
-          <li>Full M365 integration (Copilot, Teams, SharePoint)</li>
-          <li>LinkedIn & custom API integrations</li>
-          <li>Webhook routing & remote access setup</li>
-          <li>AgentMail inbox configuration</li>
-          <li>Full persona & identity files authored</li>
-          <li>Advanced LLM routing (4-tier cost optimization)</li>
-          <li>60-day onboarding support</li>
+          <li>3 executive sub-agents (CMO, CFO, CBO or custom roles)</li>
+          <li>Full identity files for all agents (SOUL / AGENTS / USER / MEMORY)</li>
+          <li>6+ custom skills built & deployed</li>
+          <li>Advanced 4-tier LLM routing — cost-optimized dispatch</li>
+          <li>Full M365 / Copilot / Teams integration</li>
+          <li>LinkedIn API + webhook routing</li>
+          <li>AgentMail — dedicated agent email inboxes (send/receive)</li>
+          <li>Remote backup repository — all configs version-controlled</li>
+          <li>1 month fine-tuning (prompts, routing, skill iteration)</li>
+          <li>CEO orchestration layer configured</li>
+          <li>2-hour live onboarding + 60-day support window</li>
         </ul>
         <div class="pricing-actions">
-          <a href="checkout.html" class="btn-primary">Pay in Full — $3,500</a>
-          <a href="checkout.html" class="btn-ghost">Start for $500 →</a>
-          <div class="deposit-note">$500 deposit · then 6 × $500/mo · total $3,500</div>
+          <a href="https://screenai.tailff380a.ts.net/checkout/" class="btn-primary">Pay in Full — $1,499</a>
+          <a href="https://screenai.tailff380a.ts.net/checkout/" class="btn-ghost">Start for $499 →</a>
+          <div class="deposit-note">$499 deposit · then 2 × $500/mo · total $1,499</div>
+          <a href="openclaw-comparison.html" style="display:block;text-align:center;font-size:0.825rem;color:var(--accent-light);font-weight:600;margin-top:0.5rem;">See full package comparison →</a>
         </div>
       </div>
 
@@ -425,29 +468,34 @@
       <div class="pricing-card">
         <div class="pricing-tier">Support — Starter</div>
         <div class="pricing-price">$350 <span>/ month</span></div>
-        <div class="pricing-desc">For Starter setup clients. Keeps your system healthy and current.</div>
+        <div class="pricing-desc">For Starter clients. Keeps your system healthy, current, and backed up.</div>
         <ul class="pricing-features">
-          <li>Monthly system check-in & health review</li>
-          <li>Code maintenance & platform updates</li>
-          <li>LLM optimization & prompt refresh</li>
-          <li>Up to 2 minor skill/agent changes per month</li>
+          <li>Monthly system health check & audit</li>
+          <li>Platform & dependency updates</li>
+          <li>LLM prompt refresh & routing optimization</li>
+          <li>Up to 2 skill / agent changes per month</li>
+          <li>Remote backup repository — provisioned & managed</li>
+          <li>Token rotation reminders & key hygiene</li>
           <li>Priority support response</li>
         </ul>
-        <a href="checkout.html" class="btn-secondary" style="display:block;text-align:center;">Subscribe →</a>
+        <a href="https://screenai.tailff380a.ts.net/checkout/" class="btn-secondary" style="display:block;text-align:center;">Subscribe — $350/mo →</a>
       </div>
       <div class="pricing-card featured">
         <div class="pricing-tier">Support — Executive</div>
         <div class="pricing-price">$500 <span>/ month</span></div>
-        <div class="pricing-desc">Full AI operations management for Executive clients.</div>
+        <div class="pricing-desc">Full AI operations management for Executive clients. Fine-tuning cycles + remote repo managed by us.</div>
         <ul class="pricing-features">
           <li>Everything in Starter support</li>
-          <li>Monthly strategy sync call</li>
-          <li>M365 & Copilot integration tuning</li>
-          <li>Model cost management & routing review</li>
-          <li>Priority response SLA</li>
-          <li>Roadmap recommendations</li>
+          <li>Monthly strategy sync call (30 min)</li>
+          <li>M365 / Copilot integration monitoring & tuning</li>
+          <li>4-tier LLM routing cost review & adjustment</li>
+          <li>Remote backup repo — monthly snapshot + tagging</li>
+          <li>Fine-tuning cycles — prompts, routing, skill iteration</li>
+          <li>AgentMail deliverability monitoring</li>
+          <li>Agent performance review & reporting</li>
+          <li>Priority SLA + roadmap recommendations</li>
         </ul>
-        <a href="checkout.html" class="btn-primary" style="display:block;text-align:center;">Subscribe →</a>
+        <a href="https://screenai.tailff380a.ts.net/checkout/" class="btn-primary" style="display:block;text-align:center;">Subscribe — $500/mo →</a>
       </div>
       <div class="pricing-card">
         <div class="pricing-tier">Cloud Hosting Add-on</div>
@@ -459,7 +507,7 @@
           <li>Remote access management</li>
           <li>99.99% uptime infrastructure</li>
         </ul>
-        <a href="checkout.html" class="btn-secondary" style="display:block;text-align:center;">Add Hosting →</a>
+        <a href="https://screenai.tailff380a.ts.net/checkout/" class="btn-secondary" style="display:block;text-align:center;">Add Hosting →</a>
       </div>
     </div>
   </div>
@@ -477,35 +525,35 @@
         <h4>Additional Agent</h4>
         <p>Custom sub-agent designed for a specific role in your business — BD, ops, client comms, research, or anything your workflow needs.</p>
         <div class="addon-price">$300</div>
-        <a href="checkout.html" class="btn-ghost">Add to Setup →</a>
+        <a href="https://screenai.tailff380a.ts.net/checkout/" class="btn-ghost">Add to Setup →</a>
       </div>
 
       <div class="addon-card">
         <h4>Search Pipeline</h4>
         <p>Intelligent search integration: web research, knowledge base search, or domain-specific data pipelines wired into your agent workflow.</p>
         <div class="addon-price">$350</div>
-        <a href="https://buy.stripe.com/test_6oU14m9bW8tSeSZ2e5gjC0h" class="btn-ghost">Add to Setup →</a>
+        <a href="https://screenai.tailff380a.ts.net/checkout/" class="btn-ghost">Add to Setup →</a>
       </div>
 
       <div class="addon-card">
         <h4>Maintenance Pack</h4>
         <p>One-time deep maintenance: full system audit, LLM prompt refresh, connector health check, and performance optimization. Ideal for systems 6+ months old.</p>
         <div class="addon-price">$350</div>
-        <a href="https://buy.stripe.com/test_5kQ14m3RC4dC9yFg4VgjC0i" class="btn-ghost">Book Maintenance →</a>
+        <a href="https://screenai.tailff380a.ts.net/checkout/" class="btn-ghost">Book Maintenance →</a>
       </div>
 
       <div class="addon-card">
         <h4>Consulting — 2 Hours</h4>
         <p>Direct strategy session: architecture review, workflow design, custom integration planning, or AI roadmap development. @ $125/hr.</p>
         <div class="addon-price">$250</div>
-        <a href="https://buy.stripe.com/test_8x23cugEocK8bGN5qhgjC0g" class="btn-ghost">Book 2 Hours →</a>
+        <a href="https://screenai.tailff380a.ts.net/checkout/" class="btn-ghost">Book 2 Hours →</a>
       </div>
 
       <div class="addon-card">
         <h4>Consulting — 5 Hours</h4>
         <p>Extended advisory block for project-based work, ongoing strategy, or multi-session engagements. Best value for complex needs. @ $125/hr.</p>
         <div class="addon-price">$625</div>
-        <a href="https://buy.stripe.com/test_6oU14m9bW8tSeSZ2e5gjC0h" class="btn-ghost">Book 5 Hours →</a>
+        <a href="https://screenai.tailff380a.ts.net/checkout/" class="btn-ghost">Book 5 Hours →</a>
       </div>
 
     </div>
@@ -516,11 +564,15 @@
 <section class="cta-banner">
   <div class="section-inner">
     <h2>Ready to Build?</h2>
-    <p>Stop experimenting. Start running AI that's built for your business.<br />One setup. A system that works. A team that keeps it working.</p>
+    <p>Stop experimenting. Start running AI that's built for your business on dedicated NVIDIA Jetson hardware.<br />One setup. A knowledge platform that works. A team that keeps it working.</p>
     <div class="hero-actions">
-      <a href="checkout.html" class="btn-primary">Start for $500 →</a>
-      <a href="mailto:info@protimeconsulting.com" class="btn-secondary">Book a 20-Min Call</a>
+      <a href="https://screenai.tailff380a.ts.net/checkout/" class="btn-primary">Start Starter — $249 Deposit →</a>
+      <a href="https://screenai.tailff380a.ts.net/checkout/" class="btn-secondary">Start Executive — $499 Deposit →</a>
     </div>
+    <p style="margin-top:1.5rem;font-size:0.875rem;color:var(--muted);">
+      <a href="openclaw-comparison.html" style="color:var(--accent-light);">See full package comparison →</a> &nbsp;·&nbsp;
+      <a href="mailto:info@protimeconsulting.com" style="color:var(--muted);">Book a 20-min call</a>
+    </p>
   </div>
 </section>
 
